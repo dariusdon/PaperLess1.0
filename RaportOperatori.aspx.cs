@@ -162,13 +162,13 @@ public partial class RaportOperatori : System.Web.UI.Page
 
     public void search(object sender, EventArgs e)
     {
-        string str = "";
+        string str = TextBox1.Text;
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (SqlConnection con = new SqlConnection(constr))
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"Select * from dbo.RawMaterial where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' and (CodMaterial = '" + str + "') order by Date desc";
+                string sql = @"Select * from dbo.RawMaterial where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' and (CodMaterial = '" + str + "' or LotMaterial = '" + str + "' or EroareMaterial = '"+str+"') order by Date desc";
                 cmd.CommandText = sql;
                 cmd.Connection = con;
                 using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
