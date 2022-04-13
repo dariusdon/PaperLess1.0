@@ -1,56 +1,53 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="RaportOperatori.aspx.cs" Inherits="RaportOperatori" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="RaportMixing.aspx.cs" Inherits="RaportMixing" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>PO</title>
+    <title>Mixing</title>
 </head>
 <body>
     <form id="form1" runat="server">
         <div>
             <p style="margin-left:45%">
-            <asp:Label ID="Label1" runat="server" ForeColor="Orange" Font-Bold="true" Font-Size="35px" Text="Raport Operatori"></asp:Label>
+            &nbsp;&nbsp;
+            <asp:Label ID="Label1" runat="server" ForeColor="Orange" Font-Bold="true" Font-Size="35px" Text="Raport Mixing"></asp:Label>
             </p>
             <p style="margin-top:50px;margin-left:100px">
                 
                
                 
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                
+               
+                
                 <asp:Label ID="Label3" Font-Bold ="true" ForeColor="Black" Font-Size="24px" runat="server" Text="Cod Material"> </asp:Label>
-                &nbsp;&nbsp;&nbsp; <asp:Label ID="Label4" Font-Bold ="true" ForeColor="Black" Font-Size="24px" runat="server" Text="Lot Material"></asp:Label>
+               
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <asp:Label ID="Label5" Font-Bold ="true" ForeColor="Black" Font-Size="24px" runat="server" Text="Coletaj Material"></asp:Label>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <asp:Label ID="Label6" Font-Bold ="true" ForeColor="Black" Font-Size="24px" runat="server" Text="Eroare Material"></asp:Label>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <asp:Label ID="Label7" Font-Bold ="true" ForeColor="Black" Font-Size="24px" runat="server" Text="Stare Material"></asp:Label>
-                &nbsp;&nbsp;&nbsp;
-                <asp:Label ID="Label8" Font-Bold ="true" ForeColor="Black" Font-Size="24px" runat="server" Text="Tip Material"></asp:Label>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <asp:Label ID="Label9" Font-Bold ="true" ForeColor="Black" Font-Size="24px" runat="server" Text="Cantitate Ambalaj"></asp:Label>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<asp:Label ID="Label4" Font-Bold ="true" ForeColor="Black" Font-Size="24px" runat="server" Text="Prioritar"></asp:Label>
+               
                  &nbsp;&nbsp;&nbsp;
-                <asp:Button ID="Button4" runat="server" Text="Adauga" Font-Size="20px" OnClick="Button4_Click" Width="115px"/>
+                
             </p>
             <p style=" margin-left:80px; border-width:4px; width: 1572px;">
                 
                
                 
                
-                <asp:TextBox ID="TextBoxA" Font-Size="16px" BorderColor="Orange" runat="server" Width="144px"></asp:TextBox>
-                &nbsp;&nbsp;&nbsp;<asp:TextBox ID="TextBoxB" Font-Size="16px" BorderColor="Orange" runat="server" Width="135px"></asp:TextBox>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <asp:TextBox ID="TextBoxC" BorderColor="Orange" Font-Size="16px" runat="server" Width="159px"></asp:TextBox>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <asp:TextBox ID="TextBoxD" Font-Size="16px"  runat="server" BorderColor="Orange"   Width="150px"></asp:TextBox>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <asp:TextBox ID="TextBoxE" Font-Size="16px"  runat="server" BorderColor="Orange"  Width="142px"></asp:TextBox>
-                &nbsp;&nbsp;&nbsp;
-                <asp:TextBox ID="TextBoxF" Font-Size="16px"  runat="server" BorderColor="Orange"   Width="130px"></asp:TextBox>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <asp:TextBox ID="TextBoxG" Font-Size="16px"  runat="server" BorderColor="Orange"   Width="147px"></asp:TextBox>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 
+               
+                
+               
+                <asp:TextBox ID="TextBoxA" Font-Size="16px" BorderColor="Orange" runat="server" Width="144px"></asp:TextBox>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <asp:TextBox ID="TextBoxB" Font-Size="16px" BorderColor="Orange" runat="server" Width="166px"></asp:TextBox>
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <asp:TextBox ID="TextBoxC" Font-Size="16px" BorderColor="Orange" runat="server" Width="166px"></asp:TextBox>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
                 
-                
-                <asp:Button ID="Button5" runat="server" Text="Salveaza" Font-Size="20px" OnClick="Button5_Click" Width="115px"/>
+                <asp:Button ID="Button4" runat="server" Text="Adauga" Font-Size="20px" OnClick="Button4_Click" Width="115px" Height="36px"/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <asp:Button ID="Button5" runat="server" Text="Salveaza" Font-Size="20px" OnClick="Button5_Click" Width="115px" Height="36px"/>
                 <br/>
                 <br/>
             </p>
@@ -70,9 +67,9 @@
                 &nbsp;&nbsp;&nbsp;
                 <asp:TextBox ID="TextBox1" Font-size="Large" runat="server" style="margin-top: 0px"></asp:TextBox>
                 &nbsp;&nbsp;
-                <asp:Button ID="Button3"  Font-Size ="20px" Font-Bold="true" runat="server" Text="Filtreaza"  OnClick="search"/>
+                <asp:Button ID="Button3"  Font-Size ="20px" Font-Bold="true" runat="server" Text="Filtreaza"  OnClick="search" Height="35px" Width="133px"/>
                 &nbsp;&nbsp;
-                 <asp:Button ID="Button6"  Font-Size ="20px" Font-Bold="true" runat="server" Text="Sterge Filtru"  OnClick="clear"/>
+                 <asp:Button ID="Button6"  Font-Size ="20px" Font-Bold="true" runat="server" Text="Sterge Filtru"  OnClick="clear" Height="35px"/>
             </p>
             
            

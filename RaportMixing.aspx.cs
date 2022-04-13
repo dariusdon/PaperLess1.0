@@ -13,7 +13,7 @@ using System.Globalization;
 using System.Text;
 using System.Configuration;
 
-public partial class RaportOperatori : System.Web.UI.Page
+public partial class RaportMixing : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -43,7 +43,7 @@ public partial class RaportOperatori : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @" Select * from dbo.RawMaterial where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' order by Date desc";
+                string sql = @" Select * from dbo.RawMaterialMixingTemp where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' order by Date desc";
 
                 cmd.CommandText = sql;
                 cmd.Connection = con;
@@ -90,17 +90,13 @@ public partial class RaportOperatori : System.Web.UI.Page
         TextBoxA.Text = "";
         TextBoxB.Text = "";
         TextBoxC.Text = "";
-        TextBoxD.Text = "";
-        TextBoxE.Text = "";
-        TextBoxF.Text = "";
-        TextBoxG.Text = "";
 
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (SqlConnection con = new SqlConnection(constr))
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @" Select * from dbo.RawMaterial where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' order by Date desc";
+                string sql = @" Select * from dbo.RawMaterialMixingTemp where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' order by Date desc";
 
                 cmd.CommandText = sql;
                 cmd.Connection = con;
@@ -172,7 +168,7 @@ public partial class RaportOperatori : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"Select * from dbo.RawMaterial where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' and (CodMaterial like '%" + str + "%' or LotMaterial like '%" + str + "%' or EroareMaterial like '%" + str + "%') order by Date desc";
+                string sql = @"Select * from dbo.RawMaterialMixingTemp where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' and (CodMaterial like '%" + str + "%' or ColetajMaterial like '%" + str + "%') order by Date desc";
                 cmd.CommandText = sql;
                 cmd.Connection = con;
                 using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
@@ -238,7 +234,7 @@ public partial class RaportOperatori : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"Select * from dbo.RawMaterial where Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' order by Date desc";
+                string sql = @"Select * from dbo.RawMaterialMixingTemp where Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' order by Date desc";
                 cmd.CommandText = sql;
                 cmd.Connection = con;
                 using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
@@ -250,21 +246,40 @@ public partial class RaportOperatori : System.Web.UI.Page
                     GridView1.AllowPaging = true;
                     GridView1.DataSource = dt;
                     GridView1.DataBind();
-                    ToCSV(dt, Server.MapPath("~/File/" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv"));
-
-                    if (File.Exists(Server.MapPath("~/File/" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv")))
-                    {
-                        Send_Email("razvan.sodoleanu@conti.de", Server.MapPath("~/File/" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv"));
-                        Response.ContentType = "application/csv";
-                        Response.AppendHeader("Content-Disposition", "attachment; filename=" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv");
-                        Response.TransmitFile(Server.MapPath("~/File/" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv"));
-                        Response.End();
-                    }
+                    ToCSV(dt, Server.MapPath("~/File/" + DateTime.Now.ToString("dd MM yyyy HH mm") + " " + "Schimb " + Session["schimb"] + ".csv"));
                 }
             }
         }
-
-    }
+        Details();
+        using (SqlConnection con = new SqlConnection(constr))
+        {
+            using (SqlCommand cmd1 = new SqlCommand())
+            {
+                string sql1 = @"Delete from dbo.RawMaterialMixingTemp where Operator like '%" + Session["name"] + "%' and Date like '%" + DateTime.Now.ToString("dd/MM/yyyy") + "%'";
+                cmd1.CommandText = sql1;
+                cmd1.Connection = con;
+                using (SqlDataAdapter sda1 = new SqlDataAdapter(cmd1))
+                {
+                    DataTable dt1 = new DataTable();
+                    sda1.Fill(dt1);
+                    GridView1.DataSource = dt1;
+                    GridView1.DataBind();
+                    Details();
+                }
+            }
+        }
+                    Details();
+                    if (File.Exists(Server.MapPath("~/File/" + DateTime.Now.ToString("dd MM yyyy HH mm") + " " + "Schimb " + Session["schimb"] + ".csv")))
+                    {
+                        Send_Email("razvan.sodoleanu@conti.de", Server.MapPath("~/File/" + DateTime.Now.ToString("dd MM yyyy HH mm") + " " + "Schimb " + Session["schimb"] + ".csv"));
+                       
+                        Response.ContentType = "application/csv";
+                        Response.AppendHeader("Content-Disposition", "attachment; filename=" + DateTime.Now.ToString("dd MM yyyy HH") + " " + "Schimb " + Session["schimb"] + ".csv");
+                        Response.TransmitFile(Server.MapPath("~/File/" + DateTime.Now.ToString("dd MM yyyy HH") + " " + "Schimb " + Session["schimb"] + ".csv"));
+                        Response.End();
+                    }
+                }
+            
     protected void Button2_Click(object sender, EventArgs e)
     {
         Response.Redirect("Default.aspx");
@@ -321,53 +336,57 @@ public partial class RaportOperatori : System.Web.UI.Page
         string string1;
         string string2;
         string string3;
-        string string4;
-        string string5;
-        string string6;
-        string string7;
         string1 = TextBoxA.Text;
         string2 = TextBoxB.Text;
         string3 = TextBoxC.Text;
-        string4 = TextBoxD.Text;
-        string5 = TextBoxE.Text;
-        string6 = TextBoxF.Text;
-        string7 = TextBoxG.Text;
+
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (SqlConnection con = new SqlConnection(constr))
         {
             using (SqlCommand cmd = new SqlCommand())
             {
                 string sql = @"
-                    INSERT INTO[dbo].[RawMaterial]
+                    INSERT INTO[dbo].[RawMaterialMixing]
                         ([CodMaterial]
-                      ,[LotMaterial]
                       ,[ColetajMaterial]
-                      ,[EroareMaterial]
-                      ,[StareMaterial]
-                      ,[TipMaterial]
-                      ,[CantitateMaterial]
                       ,[Date]
+                      ,[Operator]
                       ,[Schimb]
-                      ,[Operator])
+                      ,[prioritar])
                     VALUES
                       (
                        '" + string1 + @"'
                        , '" + string2 + @"'
-                       , '" + string3 + @"'
-                       , '" + string4 + @"'
-                       , '" + string5 + @"'
-                       , '" + string6 + @"'
-                       , '" + string7 + @"'
                        , '" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"'
-                       , '" + Session["schimb"] + @"'
                        , '" + Session["name"] + @"'
-                               )";
-                //coletaj material, il am
-                //lot
-                //eroare
-                //stare
-                //cantitate
+                       , '" + Session["schimb"] + @"'
+                       , '"+string3+"')";
+
                 cmd.CommandText = sql;
+                cmd.Connection = con;
+                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                {
+                    DataTable dt = new DataTable();
+                    sda.Fill(dt);
+                }
+
+                string sql1 = @"
+                    INSERT INTO[dbo].[RawMaterialMixingTemp]
+                        ([CodMaterial]
+                      ,[ColetajMaterial]
+                      ,[Date]
+                      ,[Operator]
+                      ,[Schimb]
+                      ,[prioritar])
+                    VALUES
+                      (
+                       '" + string1 + @"'
+                       , '" + string2 + @"'
+                       , '" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"'
+                       , '" + Session["name"] + @"'
+                       , '" + Session["schimb"] + @"'
+                       , '" + string3 + "')";
+                cmd.CommandText = sql1;
                 cmd.Connection = con;
                 using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
                 {
@@ -394,7 +413,7 @@ public partial class RaportOperatori : System.Web.UI.Page
                 {
                     using (SqlCommand cmd = new SqlCommand())
                     {
-                        string sql = @"Select *from dbo.RawMaterial where Date = '" + reference + "'";
+                        string sql = @"Select *from dbo.RawMaterialMixingTemp where Date = '" + reference + "'";
                         cmd.CommandText = sql;
                         cmd.Connection = con;
                         using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
@@ -402,13 +421,8 @@ public partial class RaportOperatori : System.Web.UI.Page
                             DataTable dt = new DataTable();
                             sda.Fill(dt);
                             TextBoxA.Text = Convert.ToString(dt.Rows[0]["CodMaterial"]);
-                            TextBoxB.Text = Convert.ToString(dt.Rows[0]["LotMaterial"]);
-                            TextBoxC.Text = Convert.ToString(dt.Rows[0]["ColetajMaterial"]);
-                            TextBoxD.Text = Convert.ToString(dt.Rows[0]["EroareMaterial"]);
-                            TextBoxE.Text = Convert.ToString(dt.Rows[0]["StareMaterial"]);
-                            TextBoxF.Text = Convert.ToString(dt.Rows[0]["TipMaterial"]);
-                            TextBoxG.Text = Convert.ToString(dt.Rows[0]["CantitateMaterial"]);
-                            TextBox2.Text = Convert.ToString(dt.Rows[0]["Date"]);
+                            TextBoxB.Text = Convert.ToString(dt.Rows[0]["ColetajMaterial"]);
+                            TextBoxC.Text = Convert.ToString(dt.Rows[0]["Prioritar"]);
                         }
                     }
                 }
@@ -420,18 +434,28 @@ public partial class RaportOperatori : System.Web.UI.Page
     {
         string date = TextBox2.Text;
         string codmaterial = TextBoxA.Text;
-        string lotmaterial = TextBoxB.Text;
-        string coletaj = TextBoxC.Text;
-        string eroare = TextBoxD.Text;
-        string stare = TextBoxE.Text;
-        string tip = TextBoxF.Text;
-        string cantitate = TextBoxG.Text;
+        string coletaj = TextBoxB.Text;
+        string prioritar = TextBoxC.Text;
+
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (SqlConnection con = new SqlConnection(constr))
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"UPDATE dbo.RawMaterial SET CodMaterial = '" + codmaterial + "', LotMaterial = '" + lotmaterial + "', ColetajMaterial = '" + coletaj + "', EroareMaterial = '" + eroare + "', StareMaterial = '" + stare + "', TipMaterial='" + tip + "', CantitateMaterial= '" + cantitate + "'  where Date like '" + date + "' ";
+                string sql = @"UPDATE dbo.RawMaterialMixingTemp SET CodMaterial = '" + codmaterial + "', ColetajMaterial = '" + coletaj + "',Prioritar = '"+prioritar+"' where Date like '" + date + "' ";
+
+                cmd.CommandText = sql;
+                cmd.Connection = con;
+                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                {
+                    DataTable dt = new DataTable();
+                    sda.Fill(dt);
+                }
+                Details();
+            }
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                string sql = @"UPDATE dbo.RawMaterialMixing SET CodMaterial = '" + codmaterial + "', ColetajMaterial = '" + coletaj + "',Prioritar = '" + prioritar + "' where Date like '" + date + "' ";
 
                 cmd.CommandText = sql;
                 cmd.Connection = con;

@@ -18,7 +18,7 @@ public partial class _Default : Page
         
         if ((string)Session["name"] == "mixing" && (string)Session["password"] == "mixing")
         {
-            Response.Redirect("Mixing.aspx");
+            Response.Redirect("RaportMixing.aspx");
         }
         if((string)Session["name"] == "admin" && (string)Session["password"] == "admin")
         {
