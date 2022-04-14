@@ -346,7 +346,7 @@ public partial class RaportMixing : System.Web.UI.Page
             using (SqlCommand cmd = new SqlCommand())
             {
                 string sql = @"
-                    INSERT INTO[dbo].[RawMaterialMixing]
+                    INSERT INTO[dbo].[RawMaterialMixingTemp]
                         ([CodMaterial]
                       ,[ColetajMaterial]
                       ,[Date]
@@ -371,7 +371,7 @@ public partial class RaportMixing : System.Web.UI.Page
                 }
 
                 string sql1 = @"
-                    INSERT INTO[dbo].[RawMaterialMixingTemp]
+                    INSERT INTO[dbo].[RawMaterialMixing]
                         ([CodMaterial]
                       ,[ColetajMaterial]
                       ,[Date]
@@ -382,8 +382,9 @@ public partial class RaportMixing : System.Web.UI.Page
                       (
                        '" + string1 + @"'
                        , '" + string2 + @"'
-                       , '" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"'
+                       , getdate()
                        , '" + Session["name"] + @"'
+               
                        , '" + Session["schimb"] + @"'
                        , '" + string3 + "')";
                 cmd.CommandText = sql1;
@@ -397,17 +398,17 @@ public partial class RaportMixing : System.Web.UI.Page
         }
         Details();
     }
-
+   
     protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
     {
-
+        
         foreach (GridViewRow row in GridView1.Rows)
         {
             if (row.RowIndex == GridView1.SelectedIndex)
             {
                 GridViewRow row1 = (GridViewRow)GridView1.Rows[row.RowIndex];
                 string reference = (string)GridView1.DataKeys[row1.RowIndex].Values["Date"];
-
+             
                 string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
                 using (SqlConnection con = new SqlConnection(constr))
                 {
@@ -423,13 +424,16 @@ public partial class RaportMixing : System.Web.UI.Page
                             TextBoxA.Text = Convert.ToString(dt.Rows[0]["CodMaterial"]);
                             TextBoxB.Text = Convert.ToString(dt.Rows[0]["ColetajMaterial"]);
                             TextBoxC.Text = Convert.ToString(dt.Rows[0]["Prioritar"]);
+                            TextBox2.Text = Convert.ToString(dt.Rows[0]["Date"]);
                         }
                     }
                 }
             }
         }
     }
-
+//    SELECT SUM([ColetajMaterial]) AS SumMaterial, [CodMaterial] FROM[BD_Timisoara].[dbo].[RawMaterialMixing]
+//-- WHERE Schimb = 'Green' AND CONVERT(date, [Date])
+//GROUP BY[CodMaterial]
     protected void Button5_Click(object sender, EventArgs e)
     {
         string date = TextBox2.Text;
@@ -442,7 +446,7 @@ public partial class RaportMixing : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"UPDATE dbo.RawMaterialMixingTemp SET CodMaterial = '" + codmaterial + "', ColetajMaterial = '" + coletaj + "',Prioritar = '"+prioritar+"' where Date like '" + date + "' ";
+                string sql = @"UPDATE dbo.RawMaterialMixingTemp SET CodMaterial = '" + codmaterial + "', ColetajMaterial = '" + coletaj + "',Prioritar = '"+prioritar+"' where Date='"+date+"' ";
 
                 cmd.CommandText = sql;
                 cmd.Connection = con;
@@ -451,11 +455,11 @@ public partial class RaportMixing : System.Web.UI.Page
                     DataTable dt = new DataTable();
                     sda.Fill(dt);
                 }
-                Details();
+             
             }
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"UPDATE dbo.RawMaterialMixing SET CodMaterial = '" + codmaterial + "', ColetajMaterial = '" + coletaj + "',Prioritar = '" + prioritar + "' where Date like '" + date + "' ";
+                string sql = @"UPDATE dbo.RawMaterialMixing SET CodMaterial = '" + codmaterial + "', ColetajMaterial = '" + coletaj + "',Prioritar = '" + prioritar + "' where Date='" + date + "' ";
 
                 cmd.CommandText = sql;
                 cmd.Connection = con;
@@ -464,8 +468,10 @@ public partial class RaportMixing : System.Web.UI.Page
                     DataTable dt = new DataTable();
                     sda.Fill(dt);
                 }
-                Details();
+
             }
+           
         }
+        Details();
     }
 }

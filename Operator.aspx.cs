@@ -2,7 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
-using Microsoft.VisualBasic.FileIO;
+
 using System.IO;
 public partial class Operator : System.Web.UI.Page
 {
