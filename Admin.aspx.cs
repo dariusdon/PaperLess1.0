@@ -96,12 +96,12 @@ public partial class Admin : System.Web.UI.Page
                 {
                     DataTable dt = new DataTable();
                     sda.Fill(dt);
-                    ToCSV(dt, Server.MapPath("~/File/" + "Mixing:" + x.ToString() + ".csv"));
-                    if (File.Exists(Server.MapPath("~/File/" + "Mixing:" + x.ToString()+ ".csv")))
+                    ToCSV(dt, Server.MapPath("~/File/" + "Mixing" + x.ToString() + ".csv"));
+                    if (File.Exists(Server.MapPath("~/File/" + "Mixing" + x.ToString()+ ".csv")))
                     {
                         Response.ContentType = "application/csv";
-                        Response.AppendHeader("Content-Disposition", "attachment; filename=" + "Mixing:" + x.ToString() + ".csv");
-                        Response.TransmitFile(Server.MapPath("~/File/" + "Mixing:" + x.ToString() + ".csv"));
+                        Response.AppendHeader("Content-Disposition", "attachment; filename=" + "Mixing" + x.ToString() + ".csv");
+                        Response.TransmitFile(Server.MapPath("~/File/" + "Mixing" + x.ToString() + ".csv"));
                         Response.End();
                     }
                 }
