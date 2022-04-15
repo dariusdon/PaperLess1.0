@@ -27,7 +27,8 @@
                   &nbsp;&nbsp;
                  <asp:TextBox ID="TextBox4" TextMode="Time" Width="150px"  runat="server"></asp:TextBox>
                   &nbsp;&nbsp;
-                <asp:Button ID="Button1" Font-Bold="true" Font-Size="20px" runat="server" Text="Genereaza Raport" />
+                <asp:Label ID="Label14" ForeColor="Orange" Font-Size="20px" runat="server" Text="Pana la Data Si Ora:"></asp:Label>
+                <asp:Button ID="Button1" Font-Bold="true" Font-Size="20px" runat="server" Text="Genereaza Raport" Onclick="OnClick"/>
              </p>
             
             <br/>
@@ -46,7 +47,7 @@
                   &nbsp;&nbsp;
                  <asp:TextBox ID="TextBox8" TextMode="Time" Width="150px"  runat="server"></asp:TextBox>
                   &nbsp;&nbsp;
-                <asp:Button ID="Button2" Font-Bold="true" Font-Size="20px" runat="server" Text="Genereaza Raport" />
+                <asp:Button ID="Button2" Font-Bold="true" Font-Size="20px" runat="server" Text="Genereaza Raport" OnClick="OnClick1"/>
              </p>
             <br/>
             <p style="margin-top:20px;margin-left:100px">

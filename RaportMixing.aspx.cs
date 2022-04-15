@@ -339,6 +339,7 @@ public partial class RaportMixing : System.Web.UI.Page
         string1 = TextBoxA.Text;
         string2 = TextBoxB.Text;
         string3 = TextBoxC.Text;
+       // string date;
 
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (SqlConnection con = new SqlConnection(constr))
@@ -371,6 +372,7 @@ public partial class RaportMixing : System.Web.UI.Page
                 }
 
                 string sql1 = @"
+                    
                     INSERT INTO[dbo].[RawMaterialMixing]
                         ([CodMaterial]
                       ,[ColetajMaterial]
@@ -382,11 +384,11 @@ public partial class RaportMixing : System.Web.UI.Page
                       (
                        '" + string1 + @"'
                        , '" + string2 + @"'
-                       , getdate()
+                       ,FORMAT (getdate(), 'dd/MM/yyyy HH:mm:ss')
                        , '" + Session["name"] + @"'
                
                        , '" + Session["schimb"] + @"'
-                       , '" + string3 + "')";
+                       , '" + string3 + "')  ";
                 cmd.CommandText = sql1;
                 cmd.Connection = con;
                 using (SqlDataAdapter sda = new SqlDataAdapter(cmd))

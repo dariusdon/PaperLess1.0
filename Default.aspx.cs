@@ -10,7 +10,7 @@ public partial class _Default : Page
     protected void Page_Load(object sender, EventArgs e)
     {
         // Label4.Text = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-        Label4.Text = Environment.UserName;
+        //Label4.Text = Environment.UserName;
         
     }
     protected void OnClick(Object sender, EventArgs e)

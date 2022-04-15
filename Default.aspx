@@ -30,7 +30,7 @@
             <p style="margin-left:41%">
                 <asp:Image ID="Image1" BorderColor="White" ImageUrl="https://thumbs.dreamstime.com/b/forklift-icon-white-background-48714652.jpg" runat="server" Height="269px" Width="376px" />
             </p>
-            <asp:Label ID="Label4" runat="server" Text="Label"></asp:Label>
+            
         </div>
     </form>
     <style type="text/css">
