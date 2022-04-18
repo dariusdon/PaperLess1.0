@@ -384,7 +384,7 @@ public partial class RaportMixing : System.Web.UI.Page
                       (
                        '" + string1 + @"'
                        , '" + string2 + @"'
-                       ,convert(varchar, getdate(), 25)
+                       ,getdate()
                        , '" + Session["name"] + @"'
                
                        , '" + Session["schimb"] + @"'

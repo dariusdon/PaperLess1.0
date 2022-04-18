@@ -72,12 +72,9 @@ public partial class Admin : System.Web.UI.Page
     }
     protected void OnClick1(object sender,EventArgs e)
     {
-        string[] date = TextBox5.Text.Split('-');
-        TextBox5.Text = date[2] + "/" + date[1] + "/" + date[0];
-        string min = TextBox5.Text + " " + TextBox6.Text;
-        string[] date1 = TextBox7.Text.Split('-');
-        TextBox7.Text = date1[2] + "/" + date1[1] + "/" + date1[0];
-        string max = TextBox7.Text + " " + TextBox8.Text;
+        string data1 = TextBox5.Text + " " + TextBox6.Text;
+        string data2 = TextBox7.Text + " " + TextBox8.Text;
+        
         Random rand = new Random();
         int x = rand.Next(1000, 10000000);
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
@@ -86,8 +83,8 @@ public partial class Admin : System.Web.UI.Page
             using (SqlCommand cmd = new SqlCommand())
             {
                 string sql = @"
-                SELECT *FROM[BD_Timisoara].[dbo].[RawMaterialMixingTemp]
-            Where Date > '" + min + "' and Date<'" + max + "' order by Date desc";
+                SELECT *FROM[BD_Timisoara].[dbo].[RawMaterialMixing]
+            Where Date > '" + data1 + "' and Date<'" + data2 + "' order by Date desc";
 
 
                 cmd.CommandText = sql;
@@ -110,6 +107,64 @@ public partial class Admin : System.Web.UI.Page
 
         }
     }
+    protected void OnClick2(object sender,EventArgs e)
+    {
+
+        string data1 = TextBox9.Text + " " + TextBox10.Text;
+        string data2 = TextBox11.Text + " " + TextBox12.Text;
+        DataTable dt = new DataTable();
+
+        Random rand = new Random();
+        int x = rand.Next(1000, 10000000);
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (SqlConnection con = new SqlConnection(constr))
+        {
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                string sql = @"SELECT SUM ([ColetajMaterial]) NumarPaletiMixing, [CodMaterial] FROM [BD_Timisoara].[dbo].[RawMaterialMixing]
+                              where date > '" + data1 + "'   GROUP BY [CodMaterial]";
+
+
+
+                //aici trebe facut un inner join, pentru a completa tabelul si a face comparatia intre tabele :)
+                //pentru asta e nevoie de acelasi format al datei
+                cmd.CommandText = sql;
+                cmd.Connection = con;
+                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                {
+                    sda.Fill(dt);
+                }
+            }
+        }
+        using (SqlConnection con = new SqlConnection(constr))
+        {
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                string sql = @"SELECT SUM ([ColetajMaterial]) NumarPaletiMixing, [CodMaterial] FROM [BD_Timisoara].[dbo].[RawMaterialMixing]
+                              where date > '" + data1 + "'   GROUP BY [CodMaterial]";
+
+
+
+                //aici trebuie facut un inner join
+                cmd.CommandText = sql;
+                cmd.Connection = con;
+                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                {
+                    sda.Fill(dt);
+                }
+            }
+        }
+        ToCSV(dt, Server.MapPath("~/File/" + "Comparare" + x.ToString() + ".csv"));
+                    if (File.Exists(Server.MapPath("~/File/" + "Comparare" + x.ToString() + ".csv")))
+                    {
+                        Response.ContentType = "application/csv";
+                        Response.AppendHeader("Content-Disposition", "attachment; filename=" + "Comparare" + x.ToString() + ".csv");
+                        Response.TransmitFile(Server.MapPath("~/File/" + "Comparare" + x.ToString() + ".csv"));
+                        Response.End();
+                    }
+    }
+
+            
     protected void ToCSV(DataTable dtDataTable, string strFilePath)
     {
         StreamWriter sw = new StreamWriter(strFilePath, false);
