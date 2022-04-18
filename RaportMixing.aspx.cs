@@ -36,14 +36,14 @@ public partial class RaportMixing : System.Web.UI.Page
             Session["schimb"] = "Blue";
         }
         Label10.Text = "Operator:" + (string)Session["name"];
-        Label11.Text = "Data:" + DateTime.Now.ToString("dd/MM/yyyy");
+        Label11.Text = "Data:" + DateTime.Now.ToString("yyyy-MM-dd");
         Label12.Text = "Schimb:" + (string)Session["schimb"];
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (SqlConnection con = new SqlConnection(constr))
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @" Select * from dbo.RawMaterialMixingTemp where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' order by Date desc";
+                string sql = @" Select * from dbo.RawMaterialMixingTemp where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("yyyy-MM-dd") + "%' order by Date desc";
 
                 cmd.CommandText = sql;
                 cmd.Connection = con;
@@ -96,7 +96,7 @@ public partial class RaportMixing : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @" Select * from dbo.RawMaterialMixingTemp where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' order by Date desc";
+                string sql = @" Select * from dbo.RawMaterialMixingTemp where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("yyyy-MM-dd") + "%' order by Date desc";
 
                 cmd.CommandText = sql;
                 cmd.Connection = con;
@@ -168,7 +168,7 @@ public partial class RaportMixing : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"Select * from dbo.RawMaterialMixingTemp where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' and (CodMaterial like '%" + str + "%' or ColetajMaterial like '%" + str + "%') order by Date desc";
+                string sql = @"Select * from dbo.RawMaterialMixingTemp where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("yyyy-MM-dd") + "%' and (CodMaterial like '%" + str + "%' or ColetajMaterial like '%" + str + "%') order by Date desc";
                 cmd.CommandText = sql;
                 cmd.Connection = con;
                 using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
@@ -234,7 +234,7 @@ public partial class RaportMixing : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"Select * from dbo.RawMaterialMixingTemp where Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' order by Date desc";
+                string sql = @"Select * from dbo.RawMaterialMixingTemp where Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("yyyy-MM-dd") + "%' order by Date desc";
                 cmd.CommandText = sql;
                 cmd.Connection = con;
                 using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
@@ -255,7 +255,7 @@ public partial class RaportMixing : System.Web.UI.Page
         {
             using (SqlCommand cmd1 = new SqlCommand())
             {
-                string sql1 = @"Delete from dbo.RawMaterialMixingTemp where Operator like '%" + Session["name"] + "%' and Date like '%" + DateTime.Now.ToString("dd/MM/yyyy") + "%'";
+                string sql1 = @"Delete from dbo.RawMaterialMixingTemp where Operator like '%" + Session["name"] + "%' and Date like '%" + DateTime.Now.ToString("yyyy-MM-dd") + "%'";
                 cmd1.CommandText = sql1;
                 cmd1.Connection = con;
                 using (SqlDataAdapter sda1 = new SqlDataAdapter(cmd1))
@@ -358,7 +358,7 @@ public partial class RaportMixing : System.Web.UI.Page
                       (
                        '" + string1 + @"'
                        , '" + string2 + @"'
-                       , '" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"'
+                       , getdate()
                        , '" + Session["name"] + @"'
                        , '" + Session["schimb"] + @"'
                        , '"+string3+"')";

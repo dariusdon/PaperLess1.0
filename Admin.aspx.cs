@@ -22,12 +22,8 @@ public partial class Admin : System.Web.UI.Page
     protected void OnClick(object sender, EventArgs e)
     {
 
-        string[] date = TextBox1.Text.Split('-');
-        TextBox1.Text = date[2] + "/" + date[1] + "/" + date[0];
-        string min = TextBox1.Text + " " + TextBox3.Text;
-        string[] date1 = TextBox2.Text.Split('-');
-        TextBox2.Text = date1[2] + "/" + date1[1] + "/" + date1[0];
-        string max = TextBox2.Text + " " + TextBox4.Text;
+        string data1 = TextBox1.Text + " " + TextBox3.Text;
+        string data2 = TextBox2.Text + " " + TextBox4.Text;
         Random rand = new Random();
         int x = rand.Next(1000, 10000000);
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
@@ -47,7 +43,7 @@ public partial class Admin : System.Web.UI.Page
                ,[Operator]
                ,[Date]
                FROM[BD_Timisoara].[dbo].[RawMaterial]
-            Where Date > '" + min + "' and Date<'" + max + "' order by Date desc";
+            Where Date > '" + data1 + "' and Date<'" + data2 + "' order by Date desc";
 
 
                 cmd.CommandText = sql;
