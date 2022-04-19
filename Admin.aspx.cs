@@ -12,6 +12,7 @@ using System.Data.SqlClient;
 using System.Globalization;
 using System.Text;
 using System.Configuration;
+using Aspose.Pdf.Operators;
 
 public partial class Admin : System.Web.UI.Page
 {
@@ -65,7 +66,13 @@ public partial class Admin : System.Web.UI.Page
             }
 
         }
+        TextBox1.Text = "";
+        TextBox2.Text = "";
+        TextBox3.Text = "";
+        TextBox4.Text = "";
+
     }
+  
     protected void OnClick1(object sender,EventArgs e)
     {
         string data1 = TextBox5.Text + " " + TextBox6.Text;
@@ -102,6 +109,10 @@ public partial class Admin : System.Web.UI.Page
             }
 
         }
+        TextBox6.Text = "";
+        TextBox7.Text = "";
+        TextBox8.Text = "";
+        TextBox5.Text = "";
     }
     protected void OnClick2(object sender,EventArgs e)
     {
@@ -109,7 +120,9 @@ public partial class Admin : System.Web.UI.Page
         string data1 = TextBox9.Text + " " + TextBox10.Text;
         string data2 = TextBox11.Text + " " + TextBox12.Text;
         DataTable dt = new DataTable();
-
+        DataTable dt1 = new DataTable();
+        DataTable final = new DataTable();
+        
         Random rand = new Random();
         int x = rand.Next(1000, 10000000);
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
@@ -117,14 +130,14 @@ public partial class Admin : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"SELECT SUM ([ColetajMaterial]) NumarPaletiMixing, [CodMaterial] FROM [BD_Timisoara].[dbo].[RawMaterialMixing]
-                              where date > '" + data1 + "'   GROUP BY [CodMaterial]";
+                string sql = @"Select CodMaterial as CodMaterialPO, Sum([ColetajMaterial]) as TotalPO from dbo.RawMaterialFinal  Where Date > '" + data1 + "' And Date<'" + data2 + "' Group By CodMaterial";
+              
 
 
 
-                //aici trebe facut un inner join, pentru a completa tabelul si a face comparatia intre tabele :)
-                //pentru asta e nevoie de acelasi format al datei
+                //aici trebuie facut un inner join
                 cmd.CommandText = sql;
+                
                 cmd.Connection = con;
                 using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
                 {
@@ -136,40 +149,24 @@ public partial class Admin : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-            string sql = @"WITH RawMaterialMF AS
-            (
-            SELECT CodMaterial, [ColetajMaterial], Date
-            FROM [BD_Timisoara].[dbo].[RawMaterialMixing]
-
-
-
-            UNION ALL
-
-
-
-            SELECT CodMaterial, [ColetajMaterial], Date
-            FROM [BD_Timisoara].[dbo].[RawMaterialFinal]
-            )
-
-
-
-            SELECT CodMaterial, SUM(ColetajMaterial) AS TransferPO
-            FROM RawMaterialMF
-            WHERE Date Between '"+ data1 + "' AND '" + data2 + "' GROUP BY CodMaterial";
+                string sql = @"Select CodMaterial as CodMaterialMixing, Sum([ColetajMaterial]) as TotalMixing from dbo.RawMaterialMixing  Where Date > '" + data1 + "' And Date<'" + data2 + "' Group By CodMaterial";
 
 
 
 
                 //aici trebuie facut un inner join
                 cmd.CommandText = sql;
+
                 cmd.Connection = con;
                 using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
                 {
-                    sda.Fill(dt);
+                    sda.Fill(dt1);
                 }
             }
         }
-        ToCSV(dt, Server.MapPath("~/File/" + "Comparare" + x.ToString() + ".csv"));
+        dt1.Merge(dt);
+       
+        ToCSV(dt1, Server.MapPath("~/File/" + "Comparare" + x.ToString() + ".csv"));
                     if (File.Exists(Server.MapPath("~/File/" + "Comparare" + x.ToString() + ".csv")))
                     {
                         Response.ContentType = "application/csv";
@@ -177,6 +174,10 @@ public partial class Admin : System.Web.UI.Page
                         Response.TransmitFile(Server.MapPath("~/File/" + "Comparare" + x.ToString() + ".csv"));
                         Response.End();
                     }
+        TextBox9.Text = "";
+        TextBox10.Text = "";
+        TextBox11.Text = "";
+        TextBox12.Text = "";
     }
 
             
