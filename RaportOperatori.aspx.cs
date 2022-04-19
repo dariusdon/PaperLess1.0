@@ -325,6 +325,8 @@ public partial class RaportOperatori : System.Web.UI.Page
         string string5;
         string string6;
         string string7;
+        string[] alt = TextBoxC.Text.Split('x');
+        int value = Convert.ToInt32(alt[0]);
         string1 = TextBoxA.Text;
         string2 = TextBoxB.Text;
         string3 = TextBoxC.Text;
@@ -354,6 +356,46 @@ public partial class RaportOperatori : System.Web.UI.Page
                        '" + string1 + @"'
                        , '" + string2 + @"'
                        , '" + string3 + @"'
+                       , '" + string4 + @"'
+                       , '" + string5 + @"'
+                       , '" + string6 + @"'
+                       , '" + string7 + @"'
+                       , getdate()
+                       , '" + Session["schimb"] + @"'
+                       , '" + Session["name"] + @"'
+                               )";
+                //coletaj material, il am
+                //lot
+                //eroare
+                //stare
+                //cantitate
+                cmd.CommandText = sql;
+                cmd.Connection = con;
+                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                {
+                    DataTable dt = new DataTable();
+                    sda.Fill(dt);
+                }
+            }
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                string sql = @"
+                    INSERT INTO[dbo].[RawMaterialFinal]
+                        ([CodMaterial]
+                      ,[LotMaterial]
+                      ,[ColetajMaterial]
+                      ,[EroareMaterial]
+                      ,[StareMaterial]
+                      ,[TipMaterial]
+                      ,[CantitateMaterial]
+                      ,[Date]
+                      ,[Schimb]
+                      ,[Operator])
+                    VALUES
+                      (
+                       '" + string1 + @"'
+                       , '" + string2 + @"'
+                       , '" + value + @"'
                        , '" + string4 + @"'
                        , '" + string5 + @"'
                        , '" + string6 + @"'
