@@ -180,7 +180,85 @@ public partial class Admin : System.Web.UI.Page
         TextBox12.Text = "";
     }
 
-            
+    protected void OnClick3(object sender, EventArgs e)
+    {
+        int eroare = 0;
+        int fara = 0;
+        string data1 = TextBox13.Text + " " + TextBox14.Text;
+        string data2 = TextBox15.Text + " " + TextBox16.Text;
+        DataTable dt = new DataTable();
+        DataTable dt1 = new DataTable();
+        DataTable final = new DataTable();
+
+        Random rand = new Random();
+        int x = rand.Next(1000, 10000000);
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (SqlConnection con = new SqlConnection(constr))
+        {
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                string sql =  @"Select Count(CodMaterial) as FaraEroare from dbo.RawMaterialFinal Where Date > '" + data1 + "' And Date<'" + data2 + "' ";
+
+
+
+
+                //aici trebuie facut un inner join
+                cmd.CommandText = sql;
+
+                cmd.Connection = con;
+                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                {
+                    sda.Fill(dt);
+                   fara = Convert.ToInt32(dt.Rows[0]["FaraEroare"]);
+                }
+            }
+        }
+        using (SqlConnection con = new SqlConnection(constr))
+        {
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                string sql = @"Select Count(CodMaterial) as Eroare from dbo.RawMaterialFinal  Where Date > '" + data1 + "' And Date<'" + data2 + "' AND EroareMaterial != '' ";
+
+
+
+
+                //aici trebuie facut un inner join
+                cmd.CommandText = sql;
+
+                cmd.Connection = con;
+                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                {
+                    sda.Fill(dt1);
+                    eroare = Convert.ToInt32(dt1.Rows[0]["Eroare"]);
+                }
+            }
+        }
+
+        double kpi;
+        kpi = Convert.ToDouble(eroare) / Convert.ToDouble(fara) * 100;
+        string kpiprocent = "KPI:" + Convert.ToString(kpi) + '%';
+        final.Columns.Add("Numar Erori:" + eroare.ToString());
+        final.Columns.Add("Numar Transferuri:" + fara.ToString());
+        final.Columns.Add(kpiprocent);
+        
+       
+        
+
+        ToCSV(final, Server.MapPath("~/File/" + "KPI" + x.ToString() + ".csv"));
+        if (File.Exists(Server.MapPath("~/File/" + "KPI" + x.ToString() + ".csv")))
+        {
+            Response.ContentType = "application/csv";
+            Response.AppendHeader("Content-Disposition", "attachment; filename=" + "KPI" + x.ToString() + ".csv");
+            Response.TransmitFile(Server.MapPath("~/File/" + "KPI" + x.ToString() + ".csv"));
+            Response.End();
+        }
+        TextBox13.Text = "";
+        TextBox14.Text = "";
+        TextBox15.Text = "";
+        TextBox16.Text = "";
+    }
+
+
     protected void ToCSV(DataTable dtDataTable, string strFilePath)
     {
         StreamWriter sw = new StreamWriter(strFilePath, false);

@@ -80,7 +80,7 @@
                <asp:TextBox ID="TextBox15" TextMode="Date"  Width="150px"  runat="server"></asp:TextBox>
                   &nbsp;&nbsp;
                  <asp:TextBox ID="TextBox16" TextMode="Time" Width="150px"  runat="server"></asp:TextBox>
-                  &nbsp; &nbsp;<asp:Button ID="Button4" Font-Bold="true" Font-Size="20px" runat="server" Text="Genereaza Raport" />
+                  &nbsp; &nbsp;<asp:Button ID="Button4" Font-Bold="true" Font-Size="20px" runat="server" Text="Genereaza Raport" OnClick="OnClick3"/>
              </p>
                 </div>
     </form>
