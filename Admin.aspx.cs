@@ -136,8 +136,27 @@ public partial class Admin : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"SELECT SUM ([ColetajMaterial]) NumarPaletiMixing, [CodMaterial] FROM [BD_Timisoara].[dbo].[RawMaterialMixing]
-                              where date > '" + data1 + "'   GROUP BY [CodMaterial]";
+            string sql = @"WITH RawMaterialMF AS
+            (
+            SELECT CodMaterial, [ColetajMaterial], Date
+            FROM [BD_Timisoara].[dbo].[RawMaterialMixing]
+
+
+
+            UNION ALL
+
+
+
+            SELECT CodMaterial, [ColetajMaterial], Date
+            FROM [BD_Timisoara].[dbo].[RawMaterialFinal]
+            )
+
+
+
+            SELECT CodMaterial, SUM(ColetajMaterial) AS TransferPO
+            FROM RawMaterialMF
+            WHERE Date Between '"+ data1 + "' AND '" + data2 + "' GROUP BY CodMaterial";
+
 
 
 
