@@ -1,0 +1,75 @@
+Aplicație PaperLess2.0(Versiunea 1)
+Scopul aplicatiei: Inregistrarea livrarilor de raw-material din RM Warehouse in Mixing
+Device: 
+Calculatoare Hala6 + Rm2 + birou Incomming
+Scanere: Disponibile in ambele locatii 
+Aplicația va fi accesată web și va salva datele în MSSQL 
+
+Stage 1
+1.	Aplicația:
+Va fi formata din 2 părți:
+A.	Login pe ecran (background); doua casute pentru introducerea numelui si parolei pentru fiecare operator desemnat. 
+ 
+Username-ul va fi numele de familie al fiecarui operator
+Parola va fi codul lor PIN. După introducere cod PIN se va afișa formularul.
+Poza in V1.0
+
+B.	Formular:
+	Numele , data & schimbul operatorului(automat)
+	Înregistrarea consumurilor:  material & coletaj(greutate x nr paleti) 
+  pentru introducerea materialelor - se va scana cu scannerul manual codul de bare de pe etichete dar si posibilitatea introducerii lor manuale
+  introducerea manuala a materialelor se va realiza sub forma : „CA64013012”  (adica o interdictie astfel incat sa nu existe spatiu intre litere si cifre, chiar daca operatorul incearca asta)
+	pentru coletaj – datele se vor introduce manual
+	Tip eroare la scanare 
+	datele se vor introduce manual doar acolo unde este cazul
+	Stare ambalaj returnabil, tip ambalaj returnabil & cantitate
+	datele se vor introduce manual doar acolo unde este cazul
+	Loc dedicat pentru semnatura celor doi operatori (depozit & mixing)
+2.	Raport:
+Draft: Poza din V1.0
+ 
+
+Pe langa aplicația propriu-zisa, avem nevoie si de un raport (cu datele generate din aplicație) care va permite urmatoarele:
+- posibilitatea descarcarii unei baze de date cu flexibilitate asupra perioadei de timp (baza de date la nivel de zi/saptamana/luna etc)(la nivel de zi in versiunea 1)
+- in prima faza(baza de date a operatorilor) – raport per schimb( 2 rapoarte(RaportH6 + RaportRM2) )
+- in cadrul tool-ului :
+	      
+	Sortarea datelor (in functie de coloanele din raport)
+	Filtrarea in functie de anumiti parametrii
+	Modificarea valorilor de pe fiecare inregistrare ( de ex: butoane <<ca in poza de mai sus>> in dreptul fiecarui rand care va deschide un formular de modificare) – buton Edit la inceputul taelului
+	Prin editare se realizeaza un update al bazei de date
+	Trimiterea mail-uri la final de schimb(un buton care sa inchida schimbul, si sa trimita un mail automat cu situatia catre superiori)
+  Parametrii standard pentru materiale sa se adauge automat din fisierul „G:\Plant_Operations\PO_Public\ParametriiMateriale\Parametrii.xlxs”
+
+
+Previzualizare:
+Prima pagina – dashboard procese in curs de executie
+
+Idee formular:
+ 
+
+Dupa introducerea tuturor datelor din cadrul unui schimb -> prin apasarea unui buton datele sa se transfere intr-o baza de date.
+Baza de date :
+
+Stage 2
+Dupa ce se creeaza, modifica si finalizeaza pe baza lessons learn-urilor de la Stage 1 – se creeaza aproximativ duplicat aceeasi aplicatie pentru departamentul Mixing.
+
+Formular:
+	Numele , data & schimbul operatorului(automat)
+	Înregistrarea consumurilor:  material & coletaj(greutate x nr paleti) 
+o	Pentru materiale : datele se vor introduce manual 
+o	introducerea manuala a materialelor se va realiza sub forma : „CA64013012”  (adica o interdictie astfel incat sa nu existe spatiu intre litere si cifre, chiar daca operatorul incearca asta)
+o	pentru coletaj – datele se vor introduce manual
+
+ 
+ 
+Pe langa aplicația propriu-zisa, avem nevoie si de un raport (cu datele generate din aplicație) care va permite urmatoarele:
+- posibilitatea descarcarii unei baze de date cu flexibilitate asupra perioadei de timp (baza de date la nivel de zi/saptamana/luna etc)
+-in prima faza(baza de date a operatorilor) 
+- in cadrul tool-ului :	      
+	sortarea datelor (in functie de coloanele din raport)
+	filtrarea in functie de anumiti parametrii
+	modificarea valorilor de pe fiecare inregistrare 
+	prin editare se realizeaza un update al bazei de date
+	un buton care sa permita trimiterea unui mail de la MX catre operatori RM Whs (ori de cate ori este nevoie de o comanda noua)
+
