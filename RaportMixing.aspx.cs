@@ -43,7 +43,7 @@ public partial class RaportMixing : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @" Select * from dbo.RawMaterialMixingTemp where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("yyyy-MM-dd") + "%' order by Date desc";
+                string sql = @" Select * from dbo.RawMaterialMixingTemp where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' order by Date desc";
 
                 cmd.CommandText = sql;
                 cmd.Connection = con;
@@ -96,7 +96,7 @@ public partial class RaportMixing : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @" Select * from dbo.RawMaterialMixingTemp where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("yyyy-MM-dd") + "%' order by Date desc";
+                string sql = @" Select * from dbo.RawMaterialMixingTemp where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' order by Date desc";
 
                 cmd.CommandText = sql;
                 cmd.Connection = con;
@@ -168,7 +168,7 @@ public partial class RaportMixing : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"Select * from dbo.RawMaterialMixingTemp where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("yyyy-MM-dd") + "%' and (CodMaterial like '%" + str + "%' or ColetajMaterial like '%" + str + "%') order by Date desc";
+                string sql = @"Select * from dbo.RawMaterialMixingTemp where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' and (CodMaterial like '%" + str + "%' or ColetajMaterial like '%" + str + "%') order by Date desc";
                 cmd.CommandText = sql;
                 cmd.Connection = con;
                 using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
@@ -234,7 +234,7 @@ public partial class RaportMixing : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"Select * from dbo.RawMaterialMixingTemp where Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("yyyy-MM-dd") + "%' order by Date desc";
+                string sql = @"Select * from dbo.RawMaterialMixingTemp where Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' order by Date desc";
                 cmd.CommandText = sql;
                 cmd.Connection = con;
                 using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
@@ -255,7 +255,7 @@ public partial class RaportMixing : System.Web.UI.Page
         {
             using (SqlCommand cmd1 = new SqlCommand())
             {
-                string sql1 = @"Delete from dbo.RawMaterialMixingTemp where Operator like '%" + Session["name"] + "%' and Date like '%" + DateTime.Now.ToString("yyyy-MM-dd") + "%'";
+                string sql1 = @"Delete from dbo.RawMaterialMixingTemp where Operator like '%" + Session["name"] + "%' and Date like '%" + DateTime.Now.ToString("dd/MM/yyyy") + "%'";
                 cmd1.CommandText = sql1;
                 cmd1.Connection = con;
                 using (SqlDataAdapter sda1 = new SqlDataAdapter(cmd1))
@@ -358,7 +358,7 @@ public partial class RaportMixing : System.Web.UI.Page
                       (
                        '" + string1 + @"'
                        , '" + string2 + @"'
-                       , getdate()
+                       , '" +DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") +@"'
                        , '" + Session["name"] + @"'
                        , '" + Session["schimb"] + @"'
                        , '"+string3+"')";
@@ -427,28 +427,56 @@ public partial class RaportMixing : System.Web.UI.Page
                             TextBoxB.Text = Convert.ToString(dt.Rows[0]["ColetajMaterial"]);
                             TextBoxC.Text = Convert.ToString(dt.Rows[0]["Prioritar"]);
                             TextBox2.Text = Convert.ToString(dt.Rows[0]["Date"]);
+                            string[] date1 = TextBox2.Text.Split(' ');
+                            string[] date2 = date1[0].ToString().Split('/');
+                            string[] time = date1[1].ToString().Split(':');
+                            string year = date2[2];
+                            string mounth = date2[1];
+                            string day = date2[0];
+                            string hour = time[0];
+                            string minutes = time[1];
+                            int seconds1 = Convert.ToInt32(time[2]);
+                            string seconds1alt = time[2];
+                            int seconds2 = seconds1 + 1;
+                           
+                            string seconds2alt = "";
+                           
+                            if (seconds2 < 10)
+                            {
+                                 seconds2alt = "0" + Convert.ToString(seconds2);
+                            }
+                            else
+                            {
+                                 seconds2alt = Convert.ToString(seconds2);
+                            }
+                            string finaldate1 = year + "-" + mounth + "-" + day + " " + hour + ":" + minutes + ":" + seconds1alt +".000";
+                            string finaldate2 = year + "-" + mounth + "-" + day + " " + hour + ":" + minutes + ":" + seconds2alt +".000";
+                            TextBox3.Text = finaldate1;
+                            TextBox4.Text = finaldate2; 
                         }
                     }
                 }
             }
         }
     }
-//    SELECT SUM([ColetajMaterial]) AS SumMaterial, [CodMaterial] FROM[BD_Timisoara].[dbo].[RawMaterialMixing]
-//-- WHERE Schimb = 'Green' AND CONVERT(date, [Date])
-//GROUP BY[CodMaterial]
+//    
     protected void Button5_Click(object sender, EventArgs e)
     {
         string date = TextBox2.Text;
         string codmaterial = TextBoxA.Text;
         string coletaj = TextBoxB.Text;
         string prioritar = TextBoxC.Text;
+      
+       
 
+       
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+       
         using (SqlConnection con = new SqlConnection(constr))
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"UPDATE dbo.RawMaterialMixingTemp SET CodMaterial = '" + codmaterial + "', ColetajMaterial = '" + coletaj + "',Prioritar = '"+prioritar+"' where Date='"+date+"' ";
+                string sql = @"UPDATE dbo.RawMaterialMixingTemp SET CodMaterial = '" + codmaterial + "', ColetajMaterial = '" + coletaj + "',Prioritar = '" + prioritar + "' where Date='" + date + "' ";
 
                 cmd.CommandText = sql;
                 cmd.Connection = con;
@@ -457,11 +485,13 @@ public partial class RaportMixing : System.Web.UI.Page
                     DataTable dt = new DataTable();
                     sda.Fill(dt);
                 }
-             
-            }
+
+                }
+
+
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"UPDATE dbo.RawMaterialMixing SET CodMaterial = '" + codmaterial + "', ColetajMaterial = '" + coletaj + "',Prioritar = '" + prioritar + "' where Date='" + date + "' ";
+                string sql = @"UPDATE dbo.RawMaterialMixing SET CodMaterial = '" + codmaterial + "', ColetajMaterial = '" + coletaj + "',Prioritar = '" + prioritar + "' where Date between '" + TextBox3.Text + "' and '" + TextBox4.Text + "'";
 
                 cmd.CommandText = sql;
                 cmd.Connection = con;
@@ -472,7 +502,7 @@ public partial class RaportMixing : System.Web.UI.Page
                 }
 
             }
-           
+
         }
         Details();
     }

@@ -102,6 +102,9 @@
                 <asp:Button ID="Button2" Font-Size ="24px" Font-Bold="true" runat="server" Text="Delogare" OnClick="Button2_Click"/>
             </p>
             <asp:TextBox ID="TextBox2" Visible="false" runat="server"></asp:TextBox>
+            <asp:TextBox ID="TextBox3" Visible="false" runat="server"></asp:TextBox>
+            <asp:TextBox ID="TextBox4" Visible="false" runat="server"></asp:TextBox>
+           
         </div>
     </form>
     <script type="text/javascript">
