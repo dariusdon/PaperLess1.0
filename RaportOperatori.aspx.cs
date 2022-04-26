@@ -15,8 +15,18 @@ using System.Configuration;
 
 public partial class RaportOperatori : System.Web.UI.Page
 {
+
+    TimeSpan Shift1 = TimeSpan.FromHours(7);
+    TimeSpan Shift3 = TimeSpan.FromHours(23);
+    TimeSpan alternative = TimeSpan.FromHours(0);
+    TimeSpan current = DateTime.Now.TimeOfDay;
+    string date1 = DateTime.Now.Year.ToString("yyyy") + "-" + DateTime.Now.Month.ToString("MM") + "-" + DateTime.Now.Day.ToString("dd") + "23:00:00";
+    string date2 = DateTime.Now.Year.ToString("yyyy") + "-" + DateTime.Now.Month.ToString("MM") + "-" + DateTime.Now.Day.ToString("dd") + "23:59:00";
+    string date3 = DateTime.Now.Year.ToString("yyyy") + "-" + DateTime.Now.Month.ToString("MM") + "-" + DateTime.Now.Day.ToString("dd") + "07:00:00";
+    string date4 = DateTime.Now.Year.ToString("yyyy") + "-" + DateTime.Now.Month.ToString("MM") + "-" + DateTime.Now.AddDays(1).ToString("dd") + "23:00:00";
     protected void Page_Load(object sender, EventArgs e)
     {
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         GridView1.ShowHeader = true;
         getSchimb();
         if ((string)Session["shift"] == "O")
@@ -38,24 +48,24 @@ public partial class RaportOperatori : System.Web.UI.Page
         Label10.Text = "Operator:" + (string)Session["name"];
         Label11.Text = "Data:" + DateTime.Now.ToString("yyyy-MM-dd");
         Label12.Text = "Schimb:" + (string)Session["schimb"];
-        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-        using (SqlConnection con = new SqlConnection(constr))
-        {
-            using (SqlCommand cmd = new SqlCommand())
+       
+            using (SqlConnection con = new SqlConnection(constr))
             {
-                string sql = @" Select * from dbo.RawMaterial where  Operator = '" + Session["name"] + "' and Date like '%" + DateTime.Now.ToString("dd/MM/yyyy") + "%' order by Date desc";
-
-                cmd.CommandText = sql;
-                cmd.Connection = con;
-                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                using (SqlCommand cmd = new SqlCommand())
                 {
-                    DataTable dt = new DataTable();
-                    sda.Fill(dt);
-                    GridView1.DataSource = dt;
-                    GridView1.DataBind();
+                    string sql = @" Select * from dbo.RawMaterial where  Operator = '" + Session["name"] + "' and Date like '%" + DateTime.Now.ToString("dd/MM/yyyy") + "%' order by Date desc";
+
+                    cmd.CommandText = sql;
+                    cmd.Connection = con;
+                    using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                    {
+                        DataTable dt = new DataTable();
+                        sda.Fill(dt);
+                        GridView1.DataSource = dt;
+                        GridView1.DataBind();
+                    }
                 }
             }
-        }
     }
     protected void getSchimb()
     {
@@ -100,7 +110,7 @@ public partial class RaportOperatori : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @" Select * from dbo.RawMaterial where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' order by Date desc";
+                string sql = @" Select * from dbo.RawMaterial where  Operator = '" + Session["name"] + "' order by Date desc";
 
                 cmd.CommandText = sql;
                 cmd.Connection = con;
@@ -172,7 +182,7 @@ public partial class RaportOperatori : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"Select * from dbo.RawMaterial where  Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' and (CodMaterial like '%" + str + "%' or LotMaterial like '%" + str + "%' or EroareMaterial like '%" + str + "%') order by Date desc";
+                string sql = @"Select * from dbo.RawMaterial where  Operator = '" + Session["name"] + "' and (CodMaterial like '%" + str + "%' or LotMaterial like '%" + str + "%' or EroareMaterial like '%" + str + "%') order by Date desc";
                 cmd.CommandText = sql;
                 cmd.Connection = con;
                 using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
@@ -238,7 +248,7 @@ public partial class RaportOperatori : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"Select * from dbo.RawMaterial where Operator = '" + Session["name"] + "' and Date like '" + DateTime.Now.ToString("dd/MM/yyyy") + "%' order by Date desc";
+                string sql = @"Select * from dbo.RawMaterial where Operator = '" + Session["name"] + "' order by Date desc";
                 cmd.CommandText = sql;
                 cmd.Connection = con;
                 using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
@@ -250,8 +260,23 @@ public partial class RaportOperatori : System.Web.UI.Page
                     GridView1.AllowPaging = true;
                     GridView1.DataSource = dt;
                     GridView1.DataBind();
-                    ToCSV(dt, Server.MapPath("~/File/" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv"));
 
+                    ToCSV(dt, Server.MapPath("~/File/" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv"));
+                }
+                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                {
+                    string sql1 = "Delete from dbo.RawMaterial where 1 = 1";
+                    cmd.CommandText = sql1;
+                    cmd.Connection = con;
+                    using (SqlDataAdapter sda1 = new SqlDataAdapter(cmd))
+                    {
+                        DataTable dt1 = new DataTable();
+                        sda.Fill(dt1);
+                        GridView1.DataSource = dt1;
+                        GridView1.DataBind();
+                        Details();
+                    }
+                }
                     if (File.Exists(Server.MapPath("~/File/" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv")))
                     {
                         Send_Email("razvan.sodoleanu@conti.de", Server.MapPath("~/File/" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv"));
@@ -261,10 +286,10 @@ public partial class RaportOperatori : System.Web.UI.Page
                         Response.End();
                     }
                 }
+                
             }
         }
-
-    }
+    
     protected void Button2_Click(object sender, EventArgs e)
     {
         Response.Redirect("Default.aspx");
