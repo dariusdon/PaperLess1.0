@@ -120,8 +120,6 @@ public partial class Admin : System.Web.UI.Page
         string data1 = TextBox9.Text + " " + TextBox10.Text;
         string data2 = TextBox11.Text + " " + TextBox12.Text;
         DataTable dt = new DataTable();
-        DataTable dt1 = new DataTable();
-        DataTable final = new DataTable();
         
         Random rand = new Random();
         int x = rand.Next(1000, 10000000);
@@ -130,8 +128,14 @@ public partial class Admin : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"Select CodMaterial as CodMaterialPO, Sum([ColetajMaterial]) as TotalPO from dbo.RawMaterialFinal  Where Date > '" + data1 + "' And Date<'" + data2 + "' Group By CodMaterial";
-              
+                string sql = @"select c1.CodMaterial,SUM(c1.ColetajMaterial) as NumarPaletiPO,SUM(c2.ColetajMaterial) as NumarPaletiMixing,
+                            (SUM(c1.ColetajMaterial) - SUM(c2.ColetajMaterial)) as DiferentaPoMixing,
+                            (SUM(c2.ColetajMaterial) - SUM(c1.ColetajMaterial)) as DiferentaMixingPO
+                            from RawMaterialFinal c1
+                            inner Join RawMaterialMixing c2 on c1.CodMaterial = c2.CodMaterial
+                            Where c1.Date > '" + data1 + "' and c2.Date<'" + data2 + "' Group By c1.CodMaterial";
+
+
 
 
 
@@ -145,28 +149,7 @@ public partial class Admin : System.Web.UI.Page
                 }
             }
         }
-        using (SqlConnection con = new SqlConnection(constr))
-        {
-            using (SqlCommand cmd = new SqlCommand())
-            {
-                string sql = @"Select CodMaterial as CodMaterialMixing, Sum([ColetajMaterial]) as TotalMixing from dbo.RawMaterialMixing  Where Date > '" + data1 + "' And Date<'" + data2 + "' Group By CodMaterial";
-
-
-
-
-                //aici trebuie facut un inner join
-                cmd.CommandText = sql;
-
-                cmd.Connection = con;
-                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
-                {
-                    sda.Fill(dt1);
-                }
-            }
-        }
-        dt1.Merge(dt);
-       
-        ToCSV(dt1, Server.MapPath("~/File/" + "Comparare" + x.ToString() + ".csv"));
+        ToCSV(dt, Server.MapPath("~/File/" + "Comparare" + x.ToString() + ".csv"));
                     if (File.Exists(Server.MapPath("~/File/" + "Comparare" + x.ToString() + ".csv")))
                     {
                         Response.ContentType = "application/csv";

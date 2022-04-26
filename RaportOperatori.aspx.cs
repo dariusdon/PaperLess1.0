@@ -280,6 +280,7 @@ public partial class RaportOperatori : System.Web.UI.Page
                 if (File.Exists(Server.MapPath("~/File/" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv")))
                 {
                     Send_Email("razvan.sodoleanu@conti.de", Server.MapPath("~/File/" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv"));
+                    Send_Email("alexandru.oprea@conti.de", Server.MapPath("~/File/" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv"));
                     Response.ContentType = "application/csv";
                     Response.AppendHeader("Content-Disposition", "attachment; filename=" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv");
                     Response.TransmitFile(Server.MapPath("~/File/" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv"));
@@ -302,12 +303,11 @@ public partial class RaportOperatori : System.Web.UI.Page
         {
             //Send Email
             MailMessage Msg = new MailMessage();
-            Msg.From = new MailAddress("TI_TI_SM_CHANGE_TI@continental.com");// Sender details here, replace with valid value
+            Msg.From = new MailAddress("TI_TI_SM_CHANGE_TI@continental.com");
 
 
 
-            Msg.Subject = "Raport Transfer:" + DateTime.Now.ToString("dd/MM/yyyy") + " " + "Schimb:" + Session["schimb"]; // subject of email
-                                                                                                                          //Msg.To.Add("natalia.nicoleta.dragoescu@conti.de"); //Add Email id, to which we will send email
+            Msg.Subject = "Raport Transfer:" + DateTime.Now.ToString("dd/MM/yyyy") + " " + "Schimb:" + Session["schimb"]; 
             Msg.To.Add(approval);
             Msg.Attachments.Add(new Attachment(file));
 
@@ -317,8 +317,8 @@ public partial class RaportOperatori : System.Web.UI.Page
             sb.AppendLine("Va informam ca a fost trimis raportul de transfer:" + DateTime.Now.ToString("dd/MM/yyyy"));
             sb.AppendLine(" Schimbul " + Session["schimb"]);
             sb.AppendLine(" Operator: " + Session["name"]);
-            sb.AppendLine("Cel mai bun tool dezvoltat vreodata in Continental: Developer: Darius Don");
-            sb.AppendLine("Cu drag pentru cei mai smecheri colegi!");
+            sb.AppendLine("Developer: Darius Don");
+            sb.AppendLine("Project Idea: RawMaterial Team");
             //Label2.Text = sb.ToString().Replace(Environment.NewLine, "<br />");
             Msg.Body = sb.ToString().Replace(Environment.NewLine, "<br />");
 
