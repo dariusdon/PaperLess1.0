@@ -73,7 +73,7 @@
             </p>
             
            
-            <asp:GridView ID="GridView1" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" OnPageIndexChanging="GrdEmp_PageIndexChanging" DataKeyNames="Date" style="margin-left:100px" AllowPaging="true" PageSize="20" Width="1600px" Font-size="20px" Font-Bold="true"  runat="server" HeaderStyle-BackColor="#ffa500" HeaderStyle-ForeColor="Black">
+            <asp:GridView ID="GridView1" OnSorting="Details_sort" AllowSorting="true" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" OnPageIndexChanging="GrdEmp_PageIndexChanging" DataKeyNames="Date" style="margin-left:100px" AllowPaging="true" PageSize="20" Width="1600px" Font-size="20px" Font-Bold="true"  runat="server" HeaderStyle-BackColor="#ffa500" HeaderStyle-ForeColor="Black">
              <PagerSettings mode="Numeric"
           position="Bottom"           
           pagebuttoncount="20" />

@@ -339,7 +339,8 @@ public partial class RaportMixing : System.Web.UI.Page
         string1 = TextBoxA.Text;
         string2 = TextBoxB.Text;
         string3 = TextBoxC.Text;
-       // string date;
+        string alternative = string1.Replace(" ", String.Empty);
+        // string date;
 
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (SqlConnection con = new SqlConnection(constr))
@@ -356,7 +357,7 @@ public partial class RaportMixing : System.Web.UI.Page
                       ,[prioritar])
                     VALUES
                       (
-                       '" + string1 + @"'
+                       '" + alternative + @"'
                        , '" + string2 + @"'
                        , '" +DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") +@"'
                        , '" + Session["name"] + @"'
@@ -382,7 +383,7 @@ public partial class RaportMixing : System.Web.UI.Page
                       ,[prioritar])
                     VALUES
                       (
-                       '" + string1 + @"'
+                       '" + alternative + @"'
                        , '" + string2 + @"'
                        ,getdate()
                        , '" + Session["name"] + @"'
@@ -505,5 +506,28 @@ public partial class RaportMixing : System.Web.UI.Page
 
         }
         Details();
+    }
+    public void Details_sort(object sender, GridViewSortEventArgs e)
+    {
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (SqlConnection con = new SqlConnection(constr))
+        {
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                string sql = @" Select * from dbo.RawMaterialMixingTemp where  Operator = '" + Session["name"] + "' order by Date desc";
+
+                cmd.CommandText = sql;
+                cmd.Connection = con;
+                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                {
+                    DataTable dt = new DataTable();
+                    sda.Fill(dt);
+                    e.SortDirection = SortDirection.Ascending;
+                    dt.DefaultView.Sort = e.SortExpression;
+                    GridView1.DataSource = dt;
+                    GridView1.DataBind();
+                }
+            }
+        }
     }
 }

@@ -48,24 +48,24 @@ public partial class RaportOperatori : System.Web.UI.Page
         Label10.Text = "Operator:" + (string)Session["name"];
         Label11.Text = "Data:" + DateTime.Now.ToString("yyyy-MM-dd");
         Label12.Text = "Schimb:" + (string)Session["schimb"];
-       
-            using (SqlConnection con = new SqlConnection(constr))
-            {
-                using (SqlCommand cmd = new SqlCommand())
-                {
-                    string sql = @" Select * from dbo.RawMaterial where  Operator = '" + Session["name"] + "' and Date like '%" + DateTime.Now.ToString("dd/MM/yyyy") + "%' order by Date desc";
 
-                    cmd.CommandText = sql;
-                    cmd.Connection = con;
-                    using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
-                    {
-                        DataTable dt = new DataTable();
-                        sda.Fill(dt);
-                        GridView1.DataSource = dt;
-                        GridView1.DataBind();
-                    }
+        using (SqlConnection con = new SqlConnection(constr))
+        {
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                string sql = @" Select * from dbo.RawMaterial where  Operator = '" + Session["name"] + "' and Date like '%" + DateTime.Now.ToString("dd/MM/yyyy") + "%' order by Date desc";
+
+                cmd.CommandText = sql;
+                cmd.Connection = con;
+                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                {
+                    DataTable dt = new DataTable();
+                    sda.Fill(dt);
+                    GridView1.DataSource = dt;
+                    GridView1.DataBind();
                 }
             }
+        }
     }
     protected void getSchimb()
     {
@@ -277,19 +277,19 @@ public partial class RaportOperatori : System.Web.UI.Page
                         Details();
                     }
                 }
-                    if (File.Exists(Server.MapPath("~/File/" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv")))
-                    {
-                        Send_Email("razvan.sodoleanu@conti.de", Server.MapPath("~/File/" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv"));
-                        Response.ContentType = "application/csv";
-                        Response.AppendHeader("Content-Disposition", "attachment; filename=" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv");
-                        Response.TransmitFile(Server.MapPath("~/File/" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv"));
-                        Response.End();
-                    }
+                if (File.Exists(Server.MapPath("~/File/" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv")))
+                {
+                    Send_Email("razvan.sodoleanu@conti.de", Server.MapPath("~/File/" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv"));
+                    Response.ContentType = "application/csv";
+                    Response.AppendHeader("Content-Disposition", "attachment; filename=" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv");
+                    Response.TransmitFile(Server.MapPath("~/File/" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv"));
+                    Response.End();
                 }
-                
             }
+
         }
-    
+    }
+
     protected void Button2_Click(object sender, EventArgs e)
     {
         Response.Redirect("Default.aspx");
@@ -359,6 +359,7 @@ public partial class RaportOperatori : System.Web.UI.Page
         string5 = TextBoxE.Text;
         string6 = TextBoxF.Text;
         string7 = TextBoxG.Text;
+        string alternative = string1.Replace(" ", String.Empty);
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (SqlConnection con = new SqlConnection(constr))
         {
@@ -378,14 +379,14 @@ public partial class RaportOperatori : System.Web.UI.Page
                       ,[Operator])
                     VALUES
                       (
-                       '" + string1 + @"'
+                       '" + alternative + @"'
                        , '" + string2 + @"'
                        , '" + string3 + @"'
                        , '" + string4 + @"'
                        , '" + string5 + @"'
                        , '" + string6 + @"'
                        , '" + string7 + @"'
-                       , '"+DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")+@"'
+                       , '" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"'
                        , '" + Session["schimb"] + @"'
                        , '" + Session["name"] + @"'
                                )";
@@ -418,7 +419,7 @@ public partial class RaportOperatori : System.Web.UI.Page
                       ,[Operator])
                     VALUES
                       (
-                       '" + string1 + @"'
+                       '" + alternative + @"'
                        , '" + string2 + @"'
                        , '" + value + @"'
                        , '" + string4 + @"'
@@ -519,7 +520,7 @@ public partial class RaportOperatori : System.Web.UI.Page
         string stare = TextBoxE.Text;
         string tip = TextBoxF.Text;
         string cantitate = TextBoxG.Text;
-       
+
         string[] alt = TextBoxC.Text.Split('x');
         int value = Convert.ToInt32(alt[0]);
 
@@ -552,6 +553,34 @@ public partial class RaportOperatori : System.Web.UI.Page
                 }
                 Details();
             }
+
+        }
+
+    }
+    public void Details_sort(object sender, GridViewSortEventArgs e)
+    {
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (SqlConnection con = new SqlConnection(constr))
+        {
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                string sql = @" Select * from dbo.RawMaterial where  Operator = '" + Session["name"] + "' order by Date desc";
+
+                cmd.CommandText = sql;
+                cmd.Connection = con;
+                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                {
+                    DataTable dt = new DataTable();
+                    sda.Fill(dt);
+                    e.SortDirection = SortDirection.Ascending;
+                    dt.DefaultView.Sort = e.SortExpression;
+                    GridView1.DataSource = dt;
+                    GridView1.DataBind();
+                }
+            }
         }
     }
 }
+
+
+
