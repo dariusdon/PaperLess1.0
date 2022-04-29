@@ -33,17 +33,8 @@ public partial class Admin : System.Web.UI.Page
             using (SqlCommand cmd = new SqlCommand())
             {
                 string sql = @"
-                SELECT TOP(1000) [CodMaterial]
-               ,[LotMaterial]
-               ,[ColetajMaterial]
-               ,[EroareMaterial]
-               ,[StareMaterial]
-               ,[TipMaterial]
-               ,[CantitateMaterial]
-               ,[Schimb]
-               ,[Operator]
-               ,[Date]
-               FROM[BD_Timisoara].[dbo].[RawMaterial]
+                SELECT
+               *FROM[BD_Timisoara].[dbo].[RawMaterialFinal]
             Where Date > '" + data1 + "' and Date<'" + data2 + "' order by Date desc";
 
 
@@ -128,16 +119,12 @@ public partial class Admin : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"select c1.CodMaterial,SUM(c1.ColetajMaterial) as NumarPaletiPO,SUM(c2.ColetajMaterial) as NumarPaletiMixing,
+                string sql = @"select c1.Schimb,c1.CodMaterial,SUM(c1.ColetajMaterial) as NumarPaletiPO,SUM(c2.ColetajMaterial) as NumarPaletiMixing,
                             (SUM(c1.ColetajMaterial) - SUM(c2.ColetajMaterial)) as DiferentaPoMixing,
                             (SUM(c2.ColetajMaterial) - SUM(c1.ColetajMaterial)) as DiferentaMixingPO
                             from RawMaterialFinal c1
-                            inner Join RawMaterialMixing c2 on c1.CodMaterial = c2.CodMaterial
-                            Where c1.Date > '" + data1 + "' and c2.Date<'" + data2 + "' Group By c1.CodMaterial";
-
-
-
-
+                            inner Join RawMaterialMixing c2 on c1.CodMaterial = c2.CodMaterial 
+                            Where c1.Date > '" + data1 + "' and c2.Date<'" + data2 + "' Group By c1.Schimb,c1.CodMaterial";
 
                 //aici trebuie facut un inner join
                 cmd.CommandText = sql;
@@ -200,7 +187,7 @@ public partial class Admin : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"Select Count(CodMaterial) as Eroare from dbo.RawMaterialFinal  Where Date > '" + data1 + "' And Date<'" + data2 + "' AND EroareMaterial != '' ";
+                string sql = @"Select Count(CodMaterial) as Eroare from dbo.RawMaterialFinal  Where Date > '" + data1 + "' And Date<'" + data2 + "' AND (EroareMaterial = 'FEFO' or EroareMaterial = 'Lipsa Stoc' or EroareMaterial = 'Lipsa Batch') ";
 
 
 

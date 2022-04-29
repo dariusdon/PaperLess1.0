@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="RaportMixing.aspx.cs" Inherits="RaportMixing" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" EnableEventValidation="false" CodeFile="RaportMixing.aspx.cs" Inherits="RaportMixing" %>
 
 <!DOCTYPE html>
 
@@ -94,7 +94,7 @@
                 &nbsp;&nbsp;
                 <asp:Button ID ="Button0" Font-Size ="24px" Font-Bold="true" runat="server" Text="Printare" OnClick="Button0_Click"/> 
                 &nbsp;&nbsp; 
-                <asp:Button ID="Button1" Font-Size ="24px" Font-Bold="true" runat="server" Text="Inchidere Schimb" OnClick="Button1_Click"/>
+                <asp:Button ID="Button1" Font-Size ="24px" Font-Bold="true" runat="server" Text="Trimite Comanda" OnClick="Button1_Click"/>
                 &nbsp;&nbsp;
                 <asp:Button ID="Button2" Font-Size ="24px" Font-Bold="true" runat="server" Text="Delogare" OnClick="Button2_Click"/>
             </p>

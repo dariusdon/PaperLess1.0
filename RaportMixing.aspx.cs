@@ -17,6 +17,7 @@ public partial class RaportMixing : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+
         GridView1.ShowHeader = true;
         getSchimb();
         if ((string)Session["shift"] == "O")
@@ -229,6 +230,8 @@ public partial class RaportMixing : System.Web.UI.Page
     }
     protected void Button1_Click(object sender, EventArgs e)
     {
+        Random rand = new Random();
+        int x = rand.Next(1000, 10000000);
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (SqlConnection con = new SqlConnection(constr))
         {
@@ -246,7 +249,7 @@ public partial class RaportMixing : System.Web.UI.Page
                     GridView1.AllowPaging = true;
                     GridView1.DataSource = dt;
                     GridView1.DataBind();
-                    ToCSV(dt, Server.MapPath("~/File/" + DateTime.Now.ToString("dd MM yyyy HH mm") + " " + "Schimb " + Session["schimb"] + ".csv"));
+                    ToCSV(dt, Server.MapPath("~/File/" + "ID" + x.ToString() + " " + DateTime.Now.ToString("dd MM yyyy HH mm") + " " + "Schimb " + Session["schimb"] + ".csv"));
                 }
             }
         }
@@ -268,14 +271,22 @@ public partial class RaportMixing : System.Web.UI.Page
                 }
             }
         }
+
                     Details();
-                    if (File.Exists(Server.MapPath("~/File/" + DateTime.Now.ToString("dd MM yyyy HH mm") + " " + "Schimb " + Session["schimb"] + ".csv")))
+                    if (File.Exists(Server.MapPath("~/File/" + "ID" + x.ToString() + " " + DateTime.Now.ToString("dd MM yyyy HH mm") + " " + "Schimb " + Session["schimb"] + ".csv")))
                     {
-                        Send_Email("razvan.sodoleanu@conti.de", Server.MapPath("~/File/" + DateTime.Now.ToString("dd MM yyyy HH mm") + " " + "Schimb " + Session["schimb"] + ".csv"));
-                        Send_Email("alexandru.oprea@conti.de", Server.MapPath("~/File/" + DateTime.Now.Date.ToString("dd MM yyyy") + " " + "Schimb " + Session["schimb"] + ".csv"));
+                        Send_Email("razvan.sodoleanu@conti.de", Server.MapPath("~/File/" + "ID" + x.ToString() + " " + DateTime.Now.ToString("dd MM yyyy HH mm") + " " + "Schimb " + Session["schimb"] + ".csv"));
+                        Send_Email("alexandru.oprea@conti.de", Server.MapPath("~/File/" + "ID" + x.ToString() + " " + DateTime.Now.ToString("dd MM yyyy HH mm") + " " + "Schimb " + Session["schimb"] + ".csv"));
+                        Send_Email("bogadan.chelaru@conti.de", Server.MapPath("~/File/" + "ID" + x.ToString() + " " + DateTime.Now.ToString("dd MM yyyy HH mm") + " " + "Schimb " + Session["schimb"] + ".csv"));
+                        Send_Email("valerica.chelaru@conti.de", Server.MapPath("~/File/" + "ID" + x.ToString() + " " + DateTime.Now.ToString("dd MM yyyy HH mm") + " " + "Schimb " + Session["schimb"] + ".csv"));
+                        Send_Email("alexandru.manolescu@conti.de", Server.MapPath("~/File/" + "ID" + x.ToString() + " " + DateTime.Now.ToString("dd MM yyyy HH mm") + " " + "Schimb " + Session["schimb"] + ".csv"));
+                        Send_Email("cristian.seitan@conti.de", Server.MapPath("~/File/" + "ID" + x.ToString() + " " + DateTime.Now.ToString("dd MM yyyy HH mm") + " " + "Schimb " + Session["schimb"] + ".csv"));
+                        Send_Email("ivita.milivoievici@conti.de", Server.MapPath("~/File/" + "ID" + x.ToString() + " " + DateTime.Now.ToString("dd MM yyyy HH mm") + " " + "Schimb " + Session["schimb"] + ".csv"));
+                        Send_Email("operatorpo.ti_ti_fa@conti.de", Server.MapPath("~/File/" + "ID" + x.ToString() + " " + DateTime.Now.ToString("dd MM yyyy HH mm") + " " + "Schimb " + Session["schimb"] + ".csv"));
+                        Send_Email("operatorumt2.ti_ti_fa@conti.de", Server.MapPath("~/File/" + "ID" + x.ToString() + " " + DateTime.Now.ToString("dd MM yyyy HH mm") + " " + "Schimb " + Session["schimb"] + ".csv"));
                         Response.ContentType = "application/csv";
-                        Response.AppendHeader("Content-Disposition", "attachment; filename=" + DateTime.Now.ToString("dd MM yyyy HH") + " " + "Schimb " + Session["schimb"] + ".csv");
-                        Response.TransmitFile(Server.MapPath("~/File/" + DateTime.Now.ToString("dd MM yyyy HH") + " " + "Schimb " + Session["schimb"] + ".csv"));
+                        Response.AppendHeader("Content-Disposition", "attachment; filename=" + "ID" + x.ToString() + " " + DateTime.Now.ToString("dd MM yyyy HH mm") + " " + "Schimb " + Session["schimb"] + ".csv");
+                        Response.TransmitFile(Server.MapPath("~/File/" + "ID" + x.ToString() + " " + DateTime.Now.ToString("dd MM yyyy HH mm") + " " + "Schimb " + Session["schimb"] + ".csv"));
                         Response.End();
                     }
                 }

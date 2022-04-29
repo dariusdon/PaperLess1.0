@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="RaportOperatori.aspx.cs" Inherits="RaportOperatori" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" EnableEventValidation="false" CodeFile="RaportOperatori.aspx.cs" Inherits="RaportOperatori" %>
 
 <!DOCTYPE html>
 
@@ -22,9 +22,9 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <asp:Label ID="Label6" Font-Bold ="true" ForeColor="Black" Font-Size="24px" runat="server" Text="Eroare Material"></asp:Label>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <asp:Label ID="Label7" Font-Bold ="true" ForeColor="Black" Font-Size="24px" runat="server" Text="Stare Material"></asp:Label>
+                <asp:Label ID="Label7" Font-Bold ="true" ForeColor="Black" Font-Size="24px" runat="server" Text="Stare Ambalaj"></asp:Label>
                 &nbsp;&nbsp;&nbsp;
-                <asp:Label ID="Label8" Font-Bold ="true" ForeColor="Black" Font-Size="24px" runat="server" Text="Tip Material"></asp:Label>
+                <asp:Label ID="Label8" Font-Bold ="true" ForeColor="Black" Font-Size="24px" runat="server" Text="Tip Ambalaj"></asp:Label>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <asp:Label ID="Label9" Font-Bold ="true" ForeColor="Black" Font-Size="24px" runat="server" Text="Cantitate Ambalaj"></asp:Label>
                  &nbsp;&nbsp;&nbsp;
@@ -39,7 +39,19 @@
                 &nbsp;&nbsp;&nbsp;<asp:TextBox ID="TextBoxB" Font-Size="16px" BorderColor="Orange" runat="server" Width="135px"></asp:TextBox>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <asp:TextBox ID="TextBoxC" BorderColor="Orange" Font-Size="16px" runat="server" Width="159px"></asp:TextBox>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <asp:TextBox ID="TextBoxD" Font-Size="16px"  runat="server" BorderColor="Orange"   Width="150px"></asp:TextBox>
+                <asp:DropDownList ID="TextBoxD" Font-Size="16px" ForeColor="Black" BackColor="Orange" Font-Bold="true" runat="server" Width="158px">
+                    
+                   
+                    <asp:ListItem Text= "Fara" Value="Fara"></asp:ListItem>
+                     <asp:ListItem Text= "FEFO" Value="Fefo"></asp:ListItem>
+                    <asp:ListItem Text= "Lipsa Stoc" Value="Lipsa Stoc"></asp:ListItem>
+                    <asp:ListItem Text= "Lipsa Batch" Value="Lipsa Batch"></asp:ListItem>
+                    <asp:ListItem Text= "Experimental" Value="Experimental"></asp:ListItem>
+                    
+                   
+                </asp:DropDownList>
+
+                <%--<asp:TextBox ID="TextBoxD" Font-Size="16px"  runat="server" BorderColor="Orange"   Width="150px"></asp:TextBox>--%>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <asp:TextBox ID="TextBoxE" Font-Size="16px"  runat="server" BorderColor="Orange"  Width="142px"></asp:TextBox>
                 &nbsp;&nbsp;&nbsp;

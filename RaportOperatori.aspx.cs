@@ -26,6 +26,7 @@ public partial class RaportOperatori : System.Web.UI.Page
     string date4 = DateTime.Now.Year.ToString("yyyy") + "-" + DateTime.Now.Month.ToString("MM") + "-" + DateTime.Now.AddDays(1).ToString("dd") + "23:00:00";
     protected void Page_Load(object sender, EventArgs e)
     {
+     
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         GridView1.ShowHeader = true;
         getSchimb();
@@ -110,7 +111,8 @@ public partial class RaportOperatori : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @" Select * from dbo.RawMaterial where  Operator = '" + Session["name"] + "' order by Date desc";
+                string sql = @" Select 
+                      *from dbo.RawMaterial where  Operator = '" + Session["name"] + "' order by Date desc";
 
                 cmd.CommandText = sql;
                 cmd.Connection = con;
@@ -196,6 +198,7 @@ public partial class RaportOperatori : System.Web.UI.Page
         }
     }
 
+   
     protected void Button0_Click(object sender, EventArgs e)
     {
         Label label = new Label();
@@ -239,7 +242,7 @@ public partial class RaportOperatori : System.Web.UI.Page
     public override void VerifyRenderingInServerForm(Control control)
     {
         /* Confirms that an HtmlForm control is rendered for the specified ASP.NET
-           server control at run time. */
+          server control at run time. */
     }
     protected void Button1_Click(object sender, EventArgs e)
     {
@@ -265,7 +268,7 @@ public partial class RaportOperatori : System.Web.UI.Page
                 }
                 using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
                 {
-                    string sql1 = "Delete from dbo.RawMaterial where 1 = 1";
+                    string sql1 = "Delete from dbo.RawMaterial where Operator = '"+Session["name"]+"'";
                     cmd.CommandText = sql1;
                     cmd.Connection = con;
                     using (SqlDataAdapter sda1 = new SqlDataAdapter(cmd))
@@ -371,9 +374,9 @@ public partial class RaportOperatori : System.Web.UI.Page
                       ,[LotMaterial]
                       ,[ColetajMaterial]
                       ,[EroareMaterial]
-                      ,[StareMaterial]
-                      ,[TipMaterial]
-                      ,[CantitateMaterial]
+                      ,[StareAmbalaj] 
+                      ,[TipAmbalaj] 
+                      ,[CantitateAmbalaj] 
                       ,[Date]
                       ,[Schimb]
                       ,[Operator])
@@ -411,9 +414,9 @@ public partial class RaportOperatori : System.Web.UI.Page
                       ,[LotMaterial]
                       ,[ColetajMaterial]
                       ,[EroareMaterial]
-                      ,[StareMaterial]
-                      ,[TipMaterial]
-                      ,[CantitateMaterial]
+                      ,[StareAmbalaj] 
+                      ,[TipAmbalaj] 
+                      ,[CantitateAmbalaj] 
                       ,[Date]
                       ,[Schimb]
                       ,[Operator])
@@ -473,9 +476,9 @@ public partial class RaportOperatori : System.Web.UI.Page
                             TextBoxB.Text = Convert.ToString(dt.Rows[0]["LotMaterial"]);
                             TextBoxC.Text = Convert.ToString(dt.Rows[0]["ColetajMaterial"]);
                             TextBoxD.Text = Convert.ToString(dt.Rows[0]["EroareMaterial"]);
-                            TextBoxE.Text = Convert.ToString(dt.Rows[0]["StareMaterial"]);
-                            TextBoxF.Text = Convert.ToString(dt.Rows[0]["TipMaterial"]);
-                            TextBoxG.Text = Convert.ToString(dt.Rows[0]["CantitateMaterial"]);
+                            TextBoxE.Text = Convert.ToString(dt.Rows[0]["StareAmbalaj"]);
+                            TextBoxF.Text = Convert.ToString(dt.Rows[0]["TipAmbalaj"]);
+                            TextBoxG.Text = Convert.ToString(dt.Rows[0]["CantitateAmbalaj"]);
                             TextBox2.Text = Convert.ToString(dt.Rows[0]["Date"]);
                             string[] date1 = TextBox2.Text.Split(' ');
                             string[] date2 = date1[0].ToString().Split('/');
@@ -529,7 +532,7 @@ public partial class RaportOperatori : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"UPDATE dbo.RawMaterial SET CodMaterial = '" + codmaterial + "', LotMaterial = '" + lotmaterial + "', ColetajMaterial = '" + coletaj + "', EroareMaterial = '" + eroare + "', StareMaterial = '" + stare + "', TipMaterial='" + tip + "', CantitateMaterial= '" + cantitate + "'  where Date like '" + date + "' ";
+                string sql = @"UPDATE dbo.RawMaterial SET CodMaterial = '" + codmaterial + "', LotMaterial = '" + lotmaterial + "', ColetajMaterial = '" + coletaj + "', EroareMaterial = '" + eroare + "', StareAmbalaj = '" + stare + "', TipAmbalaj='" + tip + "', CantitateAmbalaj= '" + cantitate + "'  where Date like '" + date + "' ";
 
                 cmd.CommandText = sql;
                 cmd.Connection = con;
@@ -542,7 +545,7 @@ public partial class RaportOperatori : System.Web.UI.Page
             }
             using (SqlCommand cmd = new SqlCommand())
             {
-                string sql = @"UPDATE dbo.RawMaterialFinal SET CodMaterial = '" + codmaterial + "', LotMaterial = '" + lotmaterial + "', ColetajMaterial = '" + coletaj + "', EroareMaterial = '" + eroare + "', StareMaterial = '" + stare + "', TipMaterial='" + tip + "', CantitateMaterial= '" + cantitate + "'  where Date between '" + TextBox3.Text + "' and '" + TextBox4.Text + "'";
+                string sql = @"UPDATE dbo.RawMaterialFinal SET CodMaterial = '" + codmaterial + "', LotMaterial = '" + lotmaterial + "', ColetajMaterial = '" + value + "', EroareMaterial = '" + eroare + "', StareAmbalaj = '" + stare + "', TipAmbalaj='" + tip + "', CantitateAmbalaj= '" + cantitate + "'  where Date between '" + TextBox3.Text + "' and '" + TextBox4.Text + "'";
 
                 cmd.CommandText = sql;
                 cmd.Connection = con;

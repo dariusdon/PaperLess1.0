@@ -40,7 +40,17 @@ public partial class _Default : Page
         if ((string)Session["name"] == "sebastian" && (string)Session["password"] == "titirig")
         {
             Session["name"] = "Sebastian Titirig";
-            Response.Redirect("RaportOperatori.aspx");
+            Response.Redirect("Admin.aspx");
+        }
+        if ((string)Session["name"] == "razvan" && (string)Session["password"] == "sodoleanu")
+        {
+            Session["name"] = "Razvan Sodoleanu";
+            Response.Redirect("Admin.aspx");
+        }
+        if ((string)Session["name"] == "alex" && (string)Session["password"] == "oprea")
+        {
+            Session["name"] = "Alexandru Oprea";
+            Response.Redirect("Admin.aspx");
         }
         if ((string)Session["name"] == "Costea" && (string)Session["password"] == "8039")
         {
@@ -76,10 +86,10 @@ public partial class _Default : Page
         {
             Response.Redirect("Vama.aspx");
         }
-        if((string)Session["name"] == "incomming" && (string)Session["password"] == "incomming")
-        {
-            Response.Redirect("Incomming.aspx");
-        }
+        //if((string)Session["name"] == "incomming" && (string)Session["password"] == "incomming")
+        //{
+        //    Response.Redirect("Incomming.aspx");
+        //}
 
     }
 }
