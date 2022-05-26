@@ -9,8 +9,8 @@
 <body>
     <form id="form1" runat="server">
         <div style="margin-top:30px">
-            <p style="margin-left:46%">
-            <asp:Label ID="Label1" runat="server" Font-Bold="true" ForeColor="Orange" Font-Size="35px" Text="PaperPass2.0"></asp:Label>
+            <p style="margin-left:43%">
+            <asp:Label ID="Label1" runat="server" Font-Bold="true" ForeColor="Orange" Font-Size="36px" Text="RawMaterial-Mixing"></asp:Label>
             </p>
             <p style="margin-left:46%;margin-top: 10%">
             <asp:Label ID="Label2" Font-Bold="true" ForeColor ="Orange" Font-Size="30px" runat="server" Text="Nume utilizator:"></asp:Label>

@@ -47,7 +47,7 @@
                 
                 <asp:Button ID="Button4" runat="server" Text="Adauga" Font-Size="20px" OnClick="Button4_Click" Width="115px" Height="36px"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <asp:Button ID="Button5" runat="server" Text="Salveaza" Font-Size="20px" OnClick="Button5_Click" Width="115px" Height="36px"/>
+                <asp:Button ID="Button5" runat="server" Text="Editeaza Rand" Font-Size="20px" OnClick="Button5_Click" Width="172px" Height="36px"/>
                 <br/>
                 <br/>
             </p>
@@ -73,7 +73,7 @@
             </p>
             
            
-            <asp:GridView ID="GridView1" OnSorting="Details_sort" AllowSorting="true" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" OnPageIndexChanging="GrdEmp_PageIndexChanging" DataKeyNames="Date" style="margin-left:100px" AllowPaging="true" PageSize="20" Width="1600px" Font-size="20px" Font-Bold="true"  runat="server" HeaderStyle-BackColor="#ffa500" HeaderStyle-ForeColor="Black">
+            <asp:GridView ID="GridView1" OnRowDeleting="GridView1_RowDeleting" OnSorting="Details_sort"  AllowSorting="true" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" OnPageIndexChanging="GrdEmp_PageIndexChanging" DataKeyNames="Date" style="margin-left:50px" AllowPaging="true" PageSize="20" Width="1500px" Font-size="20px" Font-Bold="true"  runat="server" HeaderStyle-BackColor="#ffa500" HeaderStyle-ForeColor="Black">
              <PagerSettings mode="Numeric"
           position="Bottom"           
           pagebuttoncount="20" />
@@ -82,8 +82,8 @@
           verticalalign="Bottom"
           horizontalalign="Right"/>
              <Columns>
-                  <asp:CommandField ButtonType="Image" SelectImageUrl ="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIZO7jVpy7YL0_0RHfNp0qhjRyJwB8eZIrCa0ZUvGOp01XJM-sHIuC4PwXcEBJD40SdQU&usqp=CAU" ControlStyle-Width="25" ShowSelectButton="true" HeaderText ="Editeaza" CancelText="true"/>
-                  <%--<asp:CommandField ButtonType="Image" DeleteImageUrl= "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThjl7mlwlpu7GjhxWZhtQIHCVajZN9Hh1FMGXeBRu5_OQBsnTgmE5t74V03FPuN5SQQ7E&usqp=CAU" ControlStyle-Width="30" ShowDeleteButton="true" HeaderText ="Delete"/>--%>
+                  <asp:CommandField ButtonType="Image" SelectImageUrl ="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIZO7jVpy7YL0_0RHfNp0qhjRyJwB8eZIrCa0ZUvGOp01XJM-sHIuC4PwXcEBJD40SdQU&usqp=CAU" ControlStyle-Width="25" ShowSelectButton="true" HeaderText ="Editeaza"/>
+                  <asp:CommandField ButtonType="Image" DeleteImageUrl= "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThjl7mlwlpu7GjhxWZhtQIHCVajZN9Hh1FMGXeBRu5_OQBsnTgmE5t74V03FPuN5SQQ7E&usqp=CAU" ControlStyle-Width="25" ShowDeleteButton="true" HeaderText ="Delete" />
                   
 
                   </Columns>

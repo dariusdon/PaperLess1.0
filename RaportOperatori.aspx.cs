@@ -207,6 +207,7 @@ public partial class RaportOperatori : System.Web.UI.Page
         Label label2 = new Label();
         label2.Text = "Semnatura Depozit:";
         GridView1.Columns[0].Visible = false;
+        GridView1.Columns[1].Visible = false;
         GridView1.PagerSettings.Visible = false;
         GridView1.AllowPaging = false;
         GridView1.DataBind();
@@ -237,6 +238,8 @@ public partial class RaportOperatori : System.Web.UI.Page
         ClientScript.RegisterStartupScript(this.GetType(), "GridPrint", sb.ToString());
         GridView1.AllowPaging = true;
         GridView1.DataBind();
+        GridView1.Columns[0].Visible = true;
+        GridView1.Columns[1].Visible = true;
         Details();
     }
     public override void VerifyRenderingInServerForm(Control control)
@@ -562,7 +565,9 @@ public partial class RaportOperatori : System.Web.UI.Page
     }
     public void Details_sort(object sender, GridViewSortEventArgs e)
     {
+
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+
         using (SqlConnection con = new SqlConnection(constr))
         {
             using (SqlCommand cmd = new SqlCommand())
@@ -582,6 +587,75 @@ public partial class RaportOperatori : System.Web.UI.Page
                 }
             }
         }
+    }
+
+    protected void GridView1_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    {
+        GridViewRow row = (GridViewRow)GridView1.Rows[e.RowIndex];
+        string reference = (string)GridView1.DataKeys[row.RowIndex].Values["Date"];
+
+        string[] date1 = reference.Split(' ');
+        string[] date2 = date1[0].ToString().Split('/');
+        string[] time = date1[1].ToString().Split(':');
+        string year = date2[2];
+        string mounth = date2[1];
+        string day = date2[0];
+        string hour = time[0];
+        string minutes = time[1];
+        int seconds1 = Convert.ToInt32(time[2]);
+        string seconds1alt = time[2];
+        int seconds2 = seconds1 + 1;
+        string seconds2alt = "";
+
+        if (seconds2 < 10)
+        {
+            seconds2alt = "0" + Convert.ToString(seconds2);
+        }
+        else
+        {
+            seconds2alt = Convert.ToString(seconds2);
+        }
+        string finaldate1 = year + "-" + mounth + "-" + day + " " + hour + ":" + minutes + ":" + seconds1alt + ".000";
+        string finaldate2 = year + "-" + mounth + "-" + day + " " + hour + ":" + minutes + ":" + seconds2alt + ".000";
+        TextBox3.Text = finaldate1;
+        TextBox4.Text = finaldate2;
+
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        // Label2.Text = finaldate1;
+        using (SqlConnection con = new SqlConnection(constr))
+        {
+            using (SqlCommand cmd = new SqlCommand())
+            {
+
+                string sql = @"delete from dbo.RawMaterial where Date = '" + reference + "'";
+                cmd.CommandText = sql;
+                cmd.Connection = con;
+                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                {
+                    DataTable dt = new DataTable();
+                    sda.Fill(dt);
+                    GridView1.AllowPaging = false;
+                    GridView1.DataSource = dt;
+                    GridView1.DataBind();
+                }
+            }
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                string sql = @"delete from dbo.RawMaterialFinal where Date between '" + finaldate1 + "' and '"+finaldate2+"'";
+                cmd.CommandText = sql;
+                cmd.Connection = con;
+                using (SqlDataAdapter sda1 = new SqlDataAdapter(cmd))
+                {
+                    DataTable dt = new DataTable();
+                    sda1.Fill(dt);
+                    GridView1.AllowPaging = false;
+                    GridView1.DataSource = dt;
+                    GridView1.DataBind();
+                }
+            }
+        }
+        
+        Details();
     }
 }
 
